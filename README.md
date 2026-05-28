@@ -2,6 +2,8 @@
 
 > GPT 대화내역 기반으로 정리한 기계공학 과목별 학습 및 프로젝트 포트폴리오입니다.
 
+**GitHub:** https://github.com/popixoxipop-collab/Portfolio
+
 ---
 
 ## 목차
