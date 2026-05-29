@@ -1,12 +1,12 @@
 # 01. 제어공학 — Simulink · MATLAB
 
-> Kalman Filter 구현, Simulink 모델링, 파이프라인 제어기 설계 등 제어공학 핵심 주제들을 GPT와 함께 학습하고 구현한 기록입니다.
+> Kalman Filter 구현, Simulink 모델링, 파이프라인 제어기 설계 등 제어공학 핵심 주제를 직접 학습하고 구현한 기록입니다.
 
 ---
 
-## 대화 목록
+## 주요 학습·구현 항목
 
-| # | 제목 | 핵심 내용 |
+| # | 주제 | 핵심 내용 |
 |---|------|-----------|
 | 1 | Simulink Kalman Filter | Simulink에서 Kalman Filter 기본 구조 구현 |
 | 2 | Simulink Kalman Filter 설정 | 행렬 Q, R, P₀ 초기값 설정 방법 |
