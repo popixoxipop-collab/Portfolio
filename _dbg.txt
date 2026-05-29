@@ -1,4 +1,0 @@
-start
-numpy 1.26.4
-reader imported
-exists True
