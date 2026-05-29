@@ -26,6 +26,17 @@
 
 > 각 분야 문서는 **개념 정리**와 **실제 산출물**(소스코드·CAD·보고서·발표·영상)을 함께 연결해, 이론 이해와 구현 경험을 한 번에 확인할 수 있도록 구성했습니다.
 
+### 부록 — AI · 데이터 (KT 에이블스쿨 미니프로젝트)
+
+기계공학 전공과 별개로, KT 에이블스쿨(AIVLE)에서 수행한 **AI·데이터·웹개발** 프로젝트입니다.
+
+| # | 분야 | 한 줄 소개 | 대표 산출물 |
+|---|------|-----------|-------------|
+| 13 | [데이터 분석 — 고객 만족도 예측](./13_데이터분석_고객만족도예측/README.md) | 고객 만족도 예측·서비스 개선 데이터 분석 (미션 1~8) | 발표·회의록 |
+| 14 | [AI 에이전트 — AI 강사](./14_AI에이전트_AI강사/README.md) | 슬라이드→강의 스크립트·음성·영상 생성 LLM Agent | `.ipynb` |
+| 15 | [AI 에이전트 — 상품 리뷰 분석](./15_AI에이전트_상품리뷰분석/README.md) | LangSmith 모니터링·고도화·streamlit 대시보드 | `.ipynb`, 설계문서 |
+| 16 | [웹 개발 — 도서 표지 AI 서비스 (Pic:Story)](./16_웹개발_도서표지AI서비스/README.md) | React 풀스택 + OpenAI GPT Image 표지 자동 생성 | React 앱 |
+
 ---
 
 ## 기술 스택
@@ -37,7 +48,9 @@
 - **센서·계측**: 초음파(HC-SR04), 조도(CdS), MPU6050, Pixy2
 - **실험·데이터 분석**: 열전달·유체 실험, Excel / MATLAB 회귀분석
 - **회로 설계**: Fritzing, 부품 선정(BOM)
-- **언어**: C/C++ (AVR, Arduino), MATLAB Script
+- **AI · 데이터 (KT 에이블스쿨)**: Python, LLM Agent(LangGraph·LangSmith), gradio·streamlit, OpenAI API, 데이터 분석/시각화
+- **웹 개발**: React 19 · Vite · axios · MUI, json-server(REST), Vercel
+- **언어**: C/C++ (AVR, Arduino), MATLAB Script, Python, JavaScript(JSX)
 
 ---
 
