@@ -1,0 +1,132 @@
+#include <avr/io.h>
+#include <stdlib.h>
+#include <avr/interrupt.h> //인터럽트처리시필요한헤더파일include
+#define F_CPU	16000000UL
+#define __DELAY_BACKWARD_COMPATIBLE__
+#include <util/delay.h>
+//motor
+#define MOTOR_CW 0xd0 // 모터 Forward : PWMA=1, AIN1=1, AIN2=0, STBY=1
+#define MOTOR_CCW 0xb0 // 모터 Reverse : PWMA=1, AIN1=0, AIN2=1, STBY=1
+#define MOTOR_BRAKE 0x70 // 모터 Short Brake : PWMA=0, AIN1=1, AIN2=1, STBY=1
+#define MOTOR_STOP 0x90 // 모터 Stop : PWMA=1, AIN1=0, AIN2=0, STBY=1
+#define MOTOR_STANDBY 0x00 // 모터 Standby : PWMA=0, AIN1=0, AIN2=0, STBY=0
+
+//lux
+#define CDS_10	341	// 10 럭스일 때 ADC 값 = 10/(20+10) * 1024 (CdS = 20KΩ)
+#define CDS_20	450	// 적당한 가상 값 (임의로 가정)
+#define CDS_50	550	// 적당한 가상 값 (임의로 가정)
+#define CDS_80	650	// 적당한 가상 값 (임의로 가정)
+#define CDS_100	731	// 100 럭스 일 때 ADC 값 = 10/(4+10) * 1024 (CdS = 4KΩ)
+
+#define IDLE	0	 // IDLE 상태 값
+#define STOP	1	 // STOP 상태 값
+#define CHANGE10  2	 // CHANGE 상태 값
+#define CHANGE20  3	 // CHANGE 상태 값
+
+volatile int state = STOP;
+volatile int tone;
+void init_adc();		// 미리 선언하면 실제 프로그램은 main() 뒤에 작성 가능
+unsigned short read_adc();	// Atmel Studio 7에서 unsigned short는
+// unsigned int와 동일한 크기임 (16 bit)
+void show_adc_led1(unsigned short data);
+void show_adc_led2(unsigned short data);
+
+
+ ISR(TIMER0_OVF_vect) //Timer/Counter0오버플로우인터럽트서비스루틴
+ {
+	 unsigned short value=read_adc();
+	 if (value == CDS_10)
+	 {
+		 state=CHANGE10;
+	 }
+	 else if(value == CDS_20)
+     {
+	     state=CHANGE20;
+     }
+ }
+
+
+
+int main()
+{
+	unsigned short value;
+	DDRA = 0xff;		// LED 포드 출력 모드
+	DDRF = 0x00;		// ADC 포트는 입력
+	init_adc();			// ADC 초기화
+	
+	
+		
+	//motor
+	DDRB = 0xf0; // PB7 ~ PB4 사용
+	PORTB = MOTOR_STANDBY; // 초기는 Standby 상태
+	TCCR2 = 0x6b; // WGM10 = 11 : Fast PWM 모드
+	
+	// COM10 = 10 : match시 OC2 = 0,
+	// TCNT 0x00에서 OC2 =1
+	// CS2-0 = 011 : 64분주
+	TCCR0 = 0x03; // Normal모드, OC0 미작동, 프리스케일러32분주
+	TIMSK = 0x01; // 오버플로우인터럽트활성화, TOIE0 비트세트
+	EICRB=0x0a; // INT4, INT5하강에지(FallingEdge)트리거
+	EIMSK=0x30; // INT4, INT5인터럽트활성화
+	sei(); //sei();대신사용가능함
+	
+	
+	while(1)
+	{
+		
+
+		value = read_adc();
+		if (value <= CDS_10 && state==CHANGE10)
+		{
+			PORTA = 0x05;
+			show_adc_led1(value);	// 값을 비교하여 LED 디스플레이 함수
+			state=STOP;
+		}
+		else if (value >= CDS_20 && state==CHANGE20)
+		{
+			PORTA = 0x50; 
+			show_adc_led2(value);	// 값을 비교하여 LED 디스플레이 함수
+			state=STOP;
+		}
+		else
+		state=STOP;
+		PORTA = 0xff;
+	}
+}
+
+void init_adc()
+{
+	ADMUX = 0x40;
+	// REFS(1:0) = 01 : AVCC(+5V) 기준 전압 사용
+	// ADLAR = 0 : 디폴트 오른쪽 정렬
+	// MUX(4:0) = 00000 : ADC0 사용, 단극 입력
+	ADCSRA = 0x87;
+	// ADEN = 1 : ADC Enable
+	// ADFR = 0 : single conversion(한번만 변환) 모드
+	// ADPS(2:0) = 111 : 프리스케일러 128분주, 8us 주기
+}
+
+unsigned short read_adc()
+{
+	unsigned char adc_low, adc_high;
+	unsigned short value;
+	ADCSRA |= 0x40; 			// ADC start conversion, ADSC(비트6) = 1
+	while ((ADCSRA & 0x10) != 0x10);   	// ADC 변환 완료 검사(ADIF) (비트4)
+	adc_low = ADCL;			// 변환된 Low 값 읽어오기
+	adc_high = ADCH;			// 변환된 High 값 읽어오기
+	value = (adc_high << 8) | adc_low; 	// value는 High 및 Low 연결 16 비트 값
+	return value;
+}
+
+void show_adc_led1(unsigned short value)
+{
+	if (state == CHANGE10)
+	{state=STOP;OCR2 =230;PORTB = MOTOR_CW;_delay_ms(1000); // 순방향 회전// 딜레이 시간 선택, 1초, 2초, 3초, 4초 중 선택     	// LED 8개 ON
+	OCR2 =0;PORTB = MOTOR_STANDBY;}// LED 모두 OFF
+}
+void show_adc_led2(unsigned short value)
+{
+	if (state == CHANGE20)
+	{state=STOP;OCR2 =230;PORTB = MOTOR_CCW;_delay_ms(500); // 역방향 회// 딜레이 시간 선택, 1초, 2초, 3초, 4초 중 선택
+    OCR2 =0;PORTB = MOTOR_STANDBY;}	// LED 모두 OFF
+}

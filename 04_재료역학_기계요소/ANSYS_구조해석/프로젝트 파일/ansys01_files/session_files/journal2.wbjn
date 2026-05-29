@@ -1,0 +1,244 @@
+# encoding: utf-8
+# 2024 R1
+SetScriptVersion(Version="24.1.144")
+system1 = GetSystem(Name="SYS")
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+geometry1.Exit()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+template1 = GetTemplate(TemplateName="EngData")
+system2 = template1.CreateSystem(
+    Position="Below",
+    RelativeTo=system1)
+engineeringData1 = system2.GetContainer(ComponentName="Engineering Data")
+material1 = engineeringData1.GetMaterial(Name="Structural Steel")
+matl1 = material1.Duplicate(TargetContainer=engineeringData1)
+matl1.DisplayName = "NEW MATERIAL"
+matlProp1 = matl1.GetProperty(Name="Elasticity")
+matlProp1.SetQualifier(
+    Qualifier="Derive from",
+    Value="Shear Modulus and Poisson's Ratio")
+matlProp1.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["80 [Pa]"]])
+matlProp1.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp1.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["8E-08 [GPa]"]])
+library1 = EngData.OpenLibrary(
+    Name="General_Materials",
+    Source=ANSYS::Disk::General_Materials.xml)
+favorites1 = EngData.LoadFavoriteItems()
+matl2 = engineeringData1.ImportMaterial(
+    Name="Structural Steel",
+    Source="General_Materials.xml")
+matl3 = engineeringData1.ImportMaterial(
+    Name="Structural Steel",
+    Source="General_Materials.xml")
+matl4 = engineeringData1.ImportMaterial(
+    Name="Structural Steel",
+    Source="General_Materials.xml")
+system3 = system2.Duplicate(
+    ComponentsToShare=[],
+    RelativeTo=system2)
+system3.Delete()
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+EngData.EnableFilter(Enable=False)
+matl1.Delete()
+matl5 = material1.Duplicate(TargetContainer=engineeringData1)
+matl5.DisplayName = "NEW"
+matl5.Refresh(Source="General_Materials.xml")
+matl5.Delete()
+matl4.DisplayName = "NEW"
+matlProp2 = matl4.GetProperty(Name="Elasticity")
+matlProp2.SetQualifier(
+    Qualifier="Derive from",
+    Value="Shear Modulus and Poisson's Ratio")
+matlProp2.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["80 [Pa]"]])
+matlProp2.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp2.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["8E-08 [GPa]"]])
+EngData.WriteMaterials(
+    MaterialList=[matl4],
+    FilePath=GetAbsoluteUserPathName("NEW.xml"),
+    Format="MatML31",
+    UnitSystem="MKS_STANDARD",
+    ReplaceMaterial=True,
+    OverwriteTarget=True)
+EngData.EnableFilter()
+matl6 = engineeringData1.ImportMaterial(
+    Name="Water Liquid",
+    Source="Fluid_Materials.xml")
+matl7 = engineeringData1.ImportMaterial(
+    Name="Water Liquid",
+    Source="Fluid_Materials.xml")
+library2 = EngData.CreateLibrary(
+    Name="NEW",
+    FilePath="C:/Users/qnreo/OneDrive/Desktop/NEW.xml")
+library3 = EngData.OpenLibrary(
+    Name="NEW",
+    Source="C:/Users/qnreo/OneDrive/Desktop/NEW.xml")
+library3.Save()
+library3.Save()
+library3.Save()
+library3.Save()
+library3.Save()
+EngData.EnableFilter(Enable=False)
+Save(Overwrite=True)
+EngData.EnableFilter()
+EngData.EnableFilter(Enable=False)
+matl4.SetSuppression(Suppressed=True)
+matl4.SetSuppression(Suppressed=False)
+material1.SetSuppression(Suppressed=True)
+matl2.SetSuppression(Suppressed=True)
+matl3.SetSuppression(Suppressed=True)
+matl6.SetSuppression(Suppressed=True)
+matl7.SetSuppression(Suppressed=True)
+EngData.EnableFilter()
+matl4.SetAsDefaultSolidForModel()
+Save(Overwrite=True)
+EngData.EnableFilter(Enable=False)
+material1.Delete()
+matl2.Delete()
+matl3.Delete()
+matl6.Delete()
+matl7.Delete()
+matl8 = engineeringData1.ImportMaterial(
+    Name="Structural Steel",
+    Source="General_Materials.xml")
+EngData.EnableFilter()
+matl8.Delete()
+Update()
+ExportReport(FilePath="C:/Users/qnreo/OneDrive/Desktop/SPRING_report.html")
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+materialPropertyData1 = matlProp2.GetPropertyData(
+    Name="Elasticity",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic", "Derive from": "Shear Modulus and Poisson's Ratio"})
+materialVariable1 = materialPropertyData1.GetVariable(Name="Shear Modulus")
+parameter1 = Parameters.CreateParameter(
+    Entity=materialVariable1,
+    PropertyName="ParameterValue",
+    DisplayText="Shear Modulus")
+parameter1.ValueQuantityName = "Stress"
+parameter1.Disassociate(
+    Entity=materialVariable1,
+    PropertyName="ParameterValue")
+parameter1.Delete()
+matlProp2.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["80 [GPa]"]])
+parameter2 = Parameters.CreateParameter(
+    Entity=materialVariable1,
+    PropertyName="ParameterValue",
+    DisplayText="Shear Modulus")
+parameter2.ValueQuantityName = "Stress"
+system2.Delete()
+engineeringData2 = system1.GetContainer(ComponentName="Engineering Data")
+material2 = engineeringData2.GetMaterial(Name="Structural Steel")
+matl9 = material2.Duplicate(TargetContainer=engineeringData2)
+matl9.DisplayName = "NEW"
+matl9.Delete()
+material2.Delete()
+matl10 = engineeringData2.ImportMaterial(
+    Name="Structural Steel",
+    Source="General_Materials.xml")
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+matl11 = matl10.Duplicate(TargetContainer=engineeringData2)
+matl12 = matl10.Duplicate(TargetContainer=engineeringData2)
+matl12.Delete()
+matl13 = engineeringData2.CreateMaterial(Name="Structural Steel")
+matl13 = matl10.Duplicate(TargetContainer=engineeringData2)
+matl13.Delete()
+matlProp3 = matl11.GetProperty(Name="Elasticity")
+matlProp3.SetQualifier(
+    Qualifier="Derive from",
+    Value="Shear Modulus and Poisson's Ratio")
+matlProp3.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["80 [Pa]"]])
+matlProp3.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp3.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["8E-08 [GPa]"]])
+matl11.DisplayName = "NEW"
+materialPropertyData2 = matlProp3.GetPropertyData(
+    Name="Elasticity",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic", "Derive from": "Shear Modulus and Poisson's Ratio"})
+materialVariable2 = materialPropertyData2.GetVariable(Name="Shear Modulus")
+parameter3 = Parameters.CreateParameter(
+    Entity=materialVariable2,
+    PropertyName="ParameterValue",
+    DisplayText="Shear Modulus")
+parameter3.ValueQuantityName = "Stress"
+geometry1.Edit()
+geometry1.Exit()
+matl11.DisplayName = "G80"
+matl14 = matl10.Duplicate(TargetContainer=engineeringData2)
+matl14.Unlink()
+matl14.DisplayName = "G81"
+matlProp4 = matl14.GetProperty(Name="Elasticity")
+matlProp4.SetQualifier(
+    Qualifier="Derive from",
+    Value="Shear Modulus and Poisson's Ratio")
+matlProp4.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp4.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["76.9230769230769 [GPa]"]])
+matlProp4.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["80 [GPa]"]])
+materialPropertyData3 = matlProp4.GetPropertyData(
+    Name="Elasticity",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic", "Derive from": "Shear Modulus and Poisson's Ratio"})
+materialVariable3 = materialPropertyData3.GetVariable(Name="Shear Modulus")
+parameter4 = Parameters.CreateParameter(
+    Entity=materialVariable3,
+    PropertyName="ParameterValue",
+    DisplayText="Shear Modulus")
+parameter4.ValueQuantityName = "Stress"
+parameter3.Disassociate(
+    Entity=materialVariable2,
+    PropertyName="ParameterValue")
+parameter3.Delete()
+matlProp3.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["80 [GPa]"]])
+parameter5 = Parameters.CreateParameter(
+    Entity=materialVariable2,
+    PropertyName="ParameterValue",
+    DisplayText="Shear Modulus")
+parameter5.ValueQuantityName = "Stress"
+EngData.EnableFilter(Enable=False)
+model1.Exit()
+modelComponent1.Refresh()
+model1.Edit()
+geometry1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)

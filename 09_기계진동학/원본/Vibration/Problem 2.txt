@@ -1,0 +1,67 @@
+% Parameters
+F0 = 3675;  % Force amplitude (N)
+m = 1500;   % Mass (kg)
+c = 2000;   % Damping coefficient (N·s/m)
+k = 183750; % Spring constant (N/m)
+Y = 0.05;   % Y=5cm=0.05m (m)
+
+% Frequency range (from -20 to 20)
+omega = linspace(-20, 20, 500);  % Angular frequency range (rad/s)
+delta = F0 / k;                   % Static displacement
+zeta = c / (2 * sqrt(m * k));    % Damping ratio
+nomega = sqrt(k / m);             % Natural frequency
+
+% 1. Fix m and k, vary c
+c_values = [100, 1000, 2000, 5000];  % Different damping coefficients
+figure(1)
+hold on
+for c = c_values
+    zeta = c / (2 * sqrt(m * k));  % Update zeta for each c
+    F_T = k.*Y.*((omega / nomega).^2).*sqrt((1+(2 * zeta * (omega / nomega)).^2)./ ((1 - (omega / nomega).^2).^2 + (2 * zeta * (omega / nomega)).^2));  
+    plot(omega, abs(F_T), 'DisplayName', ['c = ' num2str(c)]);
+end
+title('Effect of Damping Coefficient c on Displacement');
+xlabel('\omega (rad/s)');
+ylabel('Force Trans,issibility |F_T(N)|');
+legend('show');
+grid on;
+xlim([-20 20]);  % Set X-axis range from -20 to 20
+
+% 2. Fix m and c, vary k
+k_values = [5000, 10000, 20000, 50000];  % Different spring constants
+figure(2)
+hold on
+for k = k_values
+    nomega = sqrt(k / m);  % Update natural frequency for each k
+    delta = F0 / k;        % Update static displacement for each k
+    zeta = c / (2 * sqrt(m * k));  % Update zeta for each k
+    F_T = k.*Y.*((omega / nomega).^2).*sqrt((1+(2 * zeta * (omega / nomega)).^2)./ ((1 - (omega / nomega).^2).^2 + (2 * zeta * (omega / nomega)).^2));  
+    plot(omega, abs(F_T), 'DisplayName', ['k = ' num2str(k)]);
+end
+title('Effect of Spring Constant k on Displacement');
+xlabel('\omega (rad/s)');
+ylabel('Force Trans,issibility |F_T(N)|');
+legend('show');
+grid on;
+xlim([-20 20]);  % Set X-axis range from -20 to 20
+
+% 3. Fix c and k, vary m
+m_values = [1000, 1500, 2000, 5000];  % Different masses
+figure(3)
+hold on
+for m = m_values
+    nomega = sqrt(k / m);  % Update natural frequency for each m
+    delta = F0 / k;        % Static displacement remains the same
+    zeta = c / (2 * sqrt(m * k));  % Update zeta for each m
+    F_T = k.*Y.*((omega / nomega).^2).*sqrt((1+(2 * zeta * (omega / nomega)).^2)./ ((1 - (omega / nomega).^2).^2 + (2 * zeta * (omega / nomega)).^2));  
+    plot(omega, abs(F_T), 'DisplayName', ['m = ' num2str(m)]);
+end
+title('Effect of Mass m on Displacement');
+xlabel('\omega (rad/s)');
+ylabel('Force Trans,issibility |F_T(N)|');
+legend('show');
+grid on;
+xlim([-20 20]);  % Set X-axis range from -20 to 20
+
+% Hold off to stop overlaying plots
+hold off;

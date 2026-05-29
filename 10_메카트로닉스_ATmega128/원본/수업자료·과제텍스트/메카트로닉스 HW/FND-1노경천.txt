@@ -1,0 +1,24 @@
+#include <avr/io.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+int main( )
+{
+	DDRC=0xff; //FND를연결한포트C를출력으로설정
+	DDRG=0x0f; //FND선택신호인포트G를출력으로설정
+	while(1) //반복적으로디스플레이
+	//1루프소요시간=5msx4=20ms
+	{
+		PORTC=0x76; // 'H'디스플레이값
+		PORTG=0x08; //가장왼쪽FND(1xxx)선택
+		_delay_ms(5);
+		PORTC=0x79; // 'E'디스플레이값
+		PORTG=0x04; //왼쪽에서2번째FND(x2xx)선택
+		_delay_ms(5);
+		PORTC=0x38; // 'L'디스플레이값
+		PORTG=0x02; //왼쪽에서3번째FND(xx3x)선택
+		_delay_ms(5);
+		PORTC=0x73; // 'P'디스플레이값
+		PORTG=0x01; //가장오른쪽FND(xxx4)선택
+		_delay_ms(5);
+	}
+}

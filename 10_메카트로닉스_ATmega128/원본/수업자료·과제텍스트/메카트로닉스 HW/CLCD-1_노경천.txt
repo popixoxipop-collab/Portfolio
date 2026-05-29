@@ -1,0 +1,109 @@
+#include <avr/io.h>
+#define 	F_CPU 	16000000UL
+#include <util/delay.h>
+#define 	NULL	0x00
+// CLCD Command & Data
+#define 	BIT4_LINE2_DOT58		0x28	// 4 Bit Mode, 2Lines, 5x8 Dot
+
+#define	DISPON_CUROFF_BLKOFF	0x0C	// Display On,Cursor Off, Blink Off
+#define	DISPOFF_CUROFF_BLKOFF	0x08	// Display Off, Cursor Off, Blink Off
+#define 	INC_NOSHIFT		0x06	// Entry Mode, Cursor Increment,
+// Display No Shift
+#define	DISPCLEAR		0x01	// Display Clear, Address 0
+// Position, Cursor 0
+#define	CUR1LINE		0x80		// Cursor Position Line 1 First
+#define	CUR2LINE		0xC0		// Cursor Position Line 2 First
+#define 	CURHOME	0x02		// Cursor Home
+#define 	E_BIT		0x04		// Enable Bit #
+#define 	RW_BIT		0x03		// Read Write Bit #
+#define 	RS_BIT		0x02		// Register Select Bit #
+
+void CLCD_cmd(char);			// 명령어 전송 함수
+void CLCD_data(char);			// 데이터 Write 함수
+void CLCD_puts(char *);			// 문자열 처리 함수
+char motto1[] = "JBNU";		// 좌우명 첫째 줄
+char motto2[] = "    ";		// 제거용
+int main(void)
+{
+	volatile int i,j,k,l;
+	_delay_ms(50);			// 전원 인가후 CLCD 셋업 시간
+	DDRC = 0xff;			// PORTC : command/data port
+	DDRD = 0xff;			// PORTD : control port
+	CLCD_cmd(BIT4_LINE2_DOT58);	// 4 Bit Mode, 2 Lines, 5x8 Dot
+	CLCD_cmd(DISPON_CUROFF_BLKOFF); 	// Display On, Cursor Off, Blink Off
+	CLCD_cmd(INC_NOSHIFT);		// Entry Mode, Cursor Increment,
+	// Display No Shift
+	CLCD_cmd(DISPCLEAR);		// Display Clear, Address 0
+	// Position, Cursor 0
+	while(1)				
+	{   
+		for(j=0;j<=12;j++) 
+		{
+		  i=CUR1LINE+j;	// 디스플레이 클리어 실행 시간 동안 대기
+		  CLCD_cmd(i);		// Cursor Position Line 1 First
+		  CLCD_puts(motto1);			// 좌우명 첫째 줄 디스플레이
+		  CLCD_cmd(DISPON_CUROFF_BLKOFF); 
+		  _delay_ms(200);
+		  CLCD_cmd(i);
+		  CLCD_puts(motto2);
+		}
+		for (k=0;k<=12;k++) 
+		{l=12+CUR1LINE-k;
+			CLCD_cmd(l);		// Cursor Position Line 1 First
+			CLCD_puts(motto1);			// 좌우명 첫째 줄 디스플레이
+			CLCD_cmd(DISPON_CUROFF_BLKOFF);
+			_delay_ms(200);
+			CLCD_cmd(l);
+			CLCD_puts(motto2);
+		}
+		
+	}
+}
+
+void CLCD_puts(char *ptr)
+{
+	while(*ptr != NULL)		// 문자열이 마지막(NULL)인지 검사
+	CLCD_data(*ptr++);		// 마지막이 아니면 1 문자 디스플레이
+}
+
+void CLCD_data(char data)
+{
+	PORTD = 0x04;			// 0b0000100, E(bit4)=0, R/W(bit3)=0,
+	// RS(bit2)=1, Write 사이클, 데이터 모드
+	_delay_us(1);			// Setup Time
+	PORTD = 0x14;			// 0b00010100, E(bit4)=1, R/W(bit3)=0,
+	// RS(bit2)=1 Enable
+	PORTC = data & 0xf0;		// upper 4bit 전송
+	_delay_us(1);			// Setup Time 사용 바람직함, 교재에서는 생략
+	PORTD = 0x04;			// 0b0000100, E(bit4)=0, R/W(bit3)=0,
+	// RS(bit2)=1, Write 사이클, 데이터 모드
+	_delay_us(2);			// Hold & Setup Time
+	PORTD = 0x14;			// 0b00010100, E(bit4)=1, R/W(bit3)=0,
+	// RS(bit2)=1 Enable
+	PORTC = (data << 4) & 0xf0; 		// lower 4bit 전송
+	_delay_us(1);			// Setup Time 사용 바람직함, 교재에서는 생략
+	PORTD = 0x04;			// 0b00000100, E(bit4)=0, R/W(bit3)=0,
+	// RS(bit2)=1 사이클 종료
+	_delay_ms(1);			// Hold Time & Execution Time
+}
+
+void CLCD_cmd(char cmd)
+{
+	PORTD = 0x00;			// 0b0000000, E(bit4)=0, R/W(bit3)=0,
+	// RS(bit2)=0, Write 사이클, 명령어 모드
+	_delay_us(1);			// Setup Time
+	PORTD = 0x10;			// 0b00010000, E(bit4)=1, R/W(bit3)=0,
+	// RS(bit2)=0 Enable
+	PORTC = cmd & 0xf0;		// upper 4bit 전송
+	_delay_us(1);			// Setup Time 사용 바람직함, 교재에서는 생략
+	PORTD = 0x00;			// 0b0000000, E(bit4)=0, R/W(bit3)=0,
+	// RS(bit2)=0, Write 사이클, 명령어 모드
+	_delay_us(2);			// Hold & Setup Time
+	PORTD = 0x10;			// 0b00010000, E(bit4)=1, R/W(bit3)=0,
+	// RS(bit2)=0 Enable
+	PORTC = (cmd << 4) & 0xf0;		// lower 4bit 전송
+	_delay_us(1);			// Setup Time 사용 바람직함, 교재에서는 생략
+	PORTD = 0x00;			// 0b00000100, E(bit4)=0, R/W(bit3)=0,
+	// RS(bit2)=0 사이클 종료
+	_delay_ms(1);			// Hold Time & Execution Time
+}

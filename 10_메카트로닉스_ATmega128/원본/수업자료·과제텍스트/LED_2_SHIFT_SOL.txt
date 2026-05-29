@@ -1,0 +1,42 @@
+#include <avr/io.h>
+#define __DELAY_BACKWARD_COMPATIBLE__
+#define F_CPU 16000000UL
+#include <util/delay.h>
+
+
+int main(void)
+{
+	unsigned char i; // i : 1 바이트 양의 정수(unsigned char)
+	// 프로그래머가 알맞은 타입 선정
+	DDRA = 0xff; // LED 연결 포트의 포트 방향은 출력 방향
+	int led = 0x80;
+	PORTA = led;
+	while (1)
+	{
+		
+		for (i=0x01; i<=0x09; i++) // ‘i=i/2’는 ‘i=i>>1’도 가능
+		{
+			_delay_ms(100);
+			led=led>>1;
+			led |= 0x80;
+			PORTA = led;
+		}
+		for (i=0x01; i<=0x07; i++) // ‘i=i/2’는 ‘i=i>>1’도 가능
+		{
+			
+			led=led<<1;
+			led |= 0x80;
+			PORTA = led;
+			_delay_ms(100);
+		}
+		
+	}
+	}
+//led=0b11111110; // 0xFE
+//led=led<<2; // led=0b11111000 //0xf8
+
+//led=0b11111110; // 0xFE
+//led=led<<1; // led=0b11111100
+
+//led |= 0b00000001; // OR bit 연산
+// led=0b11111101;

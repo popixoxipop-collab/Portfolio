@@ -159,3 +159,48 @@ BLEByteCharacteristic pitch   ("...0002...", BLERead | BLEWrite);  // 피치
 BLEByteCharacteristic roll    ("...0003...", BLERead | BLEWrite);  // 롤
 BLEByteCharacteristic yaw     ("...0004...", BLERead | BLEWrite);  // 요
 ```
+
+---
+
+## 📦 원본 자료 — Arduino · 드론 · BLE
+
+실제 작성한 스케치, 조이스틱 드론 송수신 소스 분석, Fritzing 회로 부품, 드론 부품 BOM을 포함합니다.
+
+### 대표 스케치 (`ArduinoBLE` 모터 제어)
+
+`switchCharacteristic` 1바이트의 비트 플래그로 두 모터를 제어 — 메인 모터(bit0)와 방향타 모터(bit1)를 분리 구동.
+
+```cpp
+uint8_t value = switchCharacteristic.value();
+if (value & 0x01) { analogWrite(M11, speed); analogWrite(M12, 0); }   // 메인 모터
+else              { analogWrite(M11, 0);     analogWrite(M12, 0); }
+if (value & 0x02) { analogWrite(M21, speed); analogWrite(M22, 0); }   // 방향타 모터
+else              { analogWrite(M21, 0);     analogWrite(M22, 0); }
+```
+
+### 조이스틱 드론 소스 분석
+
+상용 조이스틱-드론 펌웨어를 기능 단위(15단계+)로 쪼개 분석한 학습 자료 — Debug → Define → Variable → ADC → Checksum → BT-Connect → DataPacket → Drone Shield 까지 통신 패킷 구조를 단계별로 추적.
+- `Arduino_드론_BLE_원본/Joystick_Drone_소스분석/` 참고
+
+### 회로 · 부품
+
+| 자료 | 내용 |
+|------|------|
+| `Arduino_드론_BLE_원본/cir.fzz` | Fritzing 회로 |
+| `Arduino_드론_BLE_원본/Fritzing 사용자부품/*.fzp` | DJI 30A ESC, Adafruit 모듈 등 사용자 부품 |
+| `Arduino_드론_BLE_원본/대표작/드론 부품.xlsx` | 드론 부품 BOM(브러시리스 모터·ESC·MPU6050·Pixy2 등) |
+
+> Pixy2 SDK(`pixy2-master.zip`, 약 82MB)는 용량 문제로 저장소에서 제외했습니다(Pixy2 공식 배포본).
+
+### 파일 안내
+
+```
+Arduino_드론_BLE_원본/
+├─ 대표작/                       대표 스케치(.ino), 드론 부품 BOM, ESC 부품
+├─ Arduino_스케치_2024-11-10/    BLE 모터 제어 스케치
+├─ Joystick_Drone_소스분석/       조이스틱 드론 펌웨어 단계별 분석
+├─ Fritzing 사용자부품/           사용자 정의 .fzp 부품
+└─ *.fzpz / *.fzz                Fritzing 회로·부품
+```
+

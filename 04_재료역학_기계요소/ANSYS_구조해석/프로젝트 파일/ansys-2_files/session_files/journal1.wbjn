@@ -1,0 +1,93 @@
+# encoding: utf-8
+# 2024 R1
+SetScriptVersion(Version="24.1.144")
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit(IsDiscoveryGeometry=True)
+geometry1.Exit()
+geometry1.Edit()
+geometry1.Exit()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+material1 = engineeringData1.GetMaterial(Name="Structural Steel")
+matl1 = material1.Duplicate(TargetContainer=engineeringData1)
+matl1.DisplayName = "CRACK"
+matl1.Delete()
+matl2 = material1.Duplicate(TargetContainer=engineeringData1)
+matl2.DisplayName = "CRACK"
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+favorites1 = EngData.LoadFavoriteItems()
+EngData.EnableFilter(Enable=False)
+material1.Delete()
+matl2.Delete()
+material2 = engineeringData1.GetMaterial(Name="AL 7075-T6")
+matl3 = material2.Duplicate(TargetContainer=engineeringData1)
+matlProp1 = matl3.GetProperty(Name="Steinberg Guinan Strength")
+matlProp1.SetVariableProperty(
+    VariableName="Initial Yield Stress Y",
+    Property="Unit",
+    Value="psi")
+matlProp1.SetData(
+    Variables=["Initial Yield Stress Y"],
+    Values=[["60915.8498466734 [psi]"]])
+matlProp1.SetVariableProperty(
+    VariableName="Maximum Yield Stress Ymax",
+    Property="Unit",
+    Value="psi")
+matlProp1.SetData(
+    Variables=["Maximum Yield Stress Ymax"],
+    Values=[["117480.56756144155 [psi]"]])
+matlProp2 = matl3.GetProperty(Name="Shear Modulus")
+matlProp2.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="psi")
+matlProp2.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["3872507.5973956659 [psi]"]])
+matlProp2.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="Pa")
+matlProp2.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["26700000000 [Pa]"]])
+matlProp3 = material2.GetProperty(Name="Shear Modulus")
+matlProp3.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="MPa")
+matlProp3.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["26700 [MPa]"]])
+matlProp3.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="Pa")
+matlProp3.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["26700000000 [Pa]"]])
+matlProp1.SetData(
+    Variables=["Maximum Yield Stress Ymax"],
+    Values=[["78000 [psi]"]])
+matlProp1.SetData(
+    Variables=["Initial Yield Stress Y"],
+    Values=[["70000 [psi]"]])
+matlProp1.SetData(
+    Variables=["Initial Yield Stress Y"],
+    Values=[["100000 [psi]"]])
+matlProp1.SetData(
+    Variables=["Initial Yield Stress Y"],
+    Values=[["20 [psi]"]])
+matlProp1.SetData(
+    Variables=["Initial Yield Stress Y"],
+    Values=[["70000 [psi]"]])
+model1.Exit()
+modelComponent1.Refresh()
+model1.Edit()
+Save(Overwrite=True)

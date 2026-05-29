@@ -1,0 +1,86 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+
+#define F_CPU 16000000UL
+#include <util/delay.h>
+#define NU -1
+#define DO 0
+#define RE 1
+#define MI 2
+#define FA 3
+#define ON 0
+#define OFF 1
+
+volatile int state = OFF; 
+volatile int tone = NU;   
+
+char f_table[] = {17, 43, 66, 77, 250};
+
+ISR(INT4_vect) {
+	_delay_ms(100);
+	if ((PINE & 0x10) == 0x00) {
+		EIFR |= 1 << 4;
+		tone = FA;
+		} else {
+		tone = NU;
+		state = OFF;
+	}
+}
+
+ISR(INT5_vect) {
+	_delay_ms(100);
+	if ((PINE & 0x20) == 0x00) {
+		EIFR |= 1 << 5;
+		tone = MI;
+		} else {
+		tone = NU;
+		state = OFF;
+	}
+}
+
+ISR(INT6_vect) {
+	_delay_ms(100); 
+	if ((PINE & 0x40) == 0x00) {
+		EIFR |= 1 << 6;
+		tone = RE;
+		} else {
+		tone = NU;
+		state = OFF;
+	}
+}
+
+ISR(INT7_vect) {
+	_delay_ms(100); 
+	if ((PINE & 0x80) == 0x00) {
+		EIFR |= 1 << 7;
+		tone = DO;
+		} else {
+		tone = NU;
+		state = OFF;
+	}
+}
+ISR(TIMER0_OVF_vect) {
+	TCNT0 = f_table[tone];
+	if (state == OFF && tone != NU) {
+		PORTB |= (1 << 4);
+		state = ON;
+	}
+	else {
+		PORTB &= ~(1 << 4); 
+		state = OFF;
+	}
+}
+
+
+int main(void) {
+	DDRE = 0x00; 
+	EICRB = 0x55; 
+	EIMSK = 0xf0;
+	DDRB |= 0x10; 
+	TCCR0 = 0x03;
+	TIMSK = 0x01; 
+	sei(); 
+
+	while (1) {}
+}

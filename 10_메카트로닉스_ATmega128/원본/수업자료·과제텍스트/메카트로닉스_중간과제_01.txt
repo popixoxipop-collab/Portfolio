@@ -1,0 +1,56 @@
+#include <avr/io.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+#define STOP	0	 // STOP 상태 값
+#define GO	1	     // GO 상태 값
+
+
+volatile int state = GO; //전역변수 선언
+
+int main(void)
+{
+	DDRA = 0xff;// LED 연결 포트의 포트 방향은 출력방향
+	while(1)
+	{
+		if (state == GO)
+		{
+	    PORTA = 0x01;  //0번 비트 시작
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x02;//1번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x04;//2번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x08;//3번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x10;//4번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x20;//5번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x40;//6번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x80;//7번비트
+		_delay_ms(500); // _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x40;//6번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x20;//5번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x10;//4번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x08;//3번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x04;//2번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		PORTA = 0x02;//1번비트
+		_delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		 PORTA = 0x01;  //0번 비트 마무리
+		 _delay_ms(500);// _delay_ms(500)초 딜레이(놀기)
+		 state = STOP;//반복 동작을 막기 위한 상태 STOP으로 변경
+	
+		}
+		else
+		{
+			; //STOP 시 동작 정지
+		}
+	}
+	
+}

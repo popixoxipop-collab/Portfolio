@@ -1,0 +1,81 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+
+#define PWM_p90 5000 //+90deg:5000
+#define PWM_p45 4000 //+45deg:4000
+#define PWM_0 3000 //0deg:3000
+#define PWM_n45 2000 //-45deg:2000
+#define PWM_n90 1000 //-90deg:1000 
+
+volatile int count = 0;	        // 전역변수(global variable)
+
+//TCCR1A|=0x82;TCCR1B|=0x1a;
+void init_timer1(void)
+{
+	TCCR1A|=(1<<WGM11); //모드14,고속PWM모드
+	TCCR1B|=(1<<WGM12) | (1<<WGM13);
+	TCCR1A|=(1<<COM1A1); //비반전모드
+	TCCR1B|=(1<<CS11); //프리스케일러=8(2Mhz)
+	ICR1=39999; //TOP값,주기20ms
+}
+ISR(INT4_vect)
+{
+	_delay_ms(100);		        // 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x10)==0x10)	// 인터럽트 입력 핀(PE4)을 다시 검사하여
+	return;			            // 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 4;      		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	count--;		            // 1씩 증가
+}
+ISR(INT5_vect)
+{
+	_delay_ms(100);		        // 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x20)==0x20)	// 인터럽트 입력 핀(PE4)을 다시 검사하여
+	return;			            // 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 5;      		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	count++;		            // 1씩 증가
+}
+
+
+
+
+
+int main(void)
+{
+	DDRB|=1<<5; //PB5=OC1A출력
+	init_timer1();
+	DDRE = 0x00;		// PE4(SW1), PE5(SW2)을 포함한 PE 포트는 입력 신호
+	EICRB = 0xaa;		// INT4, INT5,INT6,INT7 하강 에지(Falling Edge) 트리거
+	EIMSK = 0xf0;		// INT4, INT5,INT6,INT7 인터럽트 활성화
+	SREG |= 0x80;		// SREG의 I(Interrupt Enalbe) 비트(bit7) ‘1’로 세트
+	while(1)
+	{
+		
+		if (count >= 2)             
+		{
+			OCR1A=PWM_p90;
+			count=2;
+		}
+		else if (count==1)    
+		{
+			OCR1A=PWM_p45;
+		}
+		else if (count == 0)       
+		{
+			OCR1A=PWM_0;
+		}
+		else if (count == -1)        
+		{
+			OCR1A=PWM_n45;
+		}
+		else if (count <= -2)        
+		{
+			OCR1A=PWM_n90;
+			count=-2;
+		}
+
+	}
+}

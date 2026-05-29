@@ -1,0 +1,41 @@
+#include <avr/io.h>
+#include <stdlib.h>
+#define F_CPU 16000000UL
+#define __DELAY_BACKWARD_COMPATIBLE__
+// Atmel Studio 7에서 _delay_ms( ) 함수에
+// 정수 외 변수를 넣으려고 할 때 필요함
+#include <util/delay.h>
+// Motor Speed
+#define STOP_SPEED 0 // Duty Cycle 0%의 값
+#define LOW_SPEED 77 // duty cycle 30%의 값 (= 255 x 0.3)
+#define MID_SPEED 153 // duty cycle 60%의 값 (= 255 x 0.6)
+#define HIGH_SPEED 230 // duty cycle 90%의 값 (= 255 x 0.9)
+// 모터 제어
+// PB7 = PWMA, PB6 = AIN1, PB5 =AIN2, PB4 = STBY
+#define MOTOR_CW 0xd0 // 모터 Forward : PWMA=1, AIN1=1, AIN2=0, STBY=1
+#define MOTOR_CCW 0xb0 // 모터 Reverse : PWMA=1, AIN1=0, AIN2=1, STBY=1
+#define MOTOR_BRAKE 0x70 // 모터 Short Brake : PWMA=0, AIN1=1, AIN2=1, STBY=1
+#define MOTOR_STOP 0x90 // 모터 Stop : PWMA=1, AIN1=0, AIN2=0, STBY=1
+#define MOTOR_STANDBY 0x00 // 모터 Standby : PWMA=0, AIN1=0, AIN2=0, STBY=0
+volatile int count=0, value=0;
+int motor_speed[4] = {STOP_SPEED, LOW_SPEED, MID_SPEED, HIGH_SPEED};
+// STOP, LOW, MID, HIGH 4단계 임의 속도 선택
+int main(void)
+{
+	DDRA = 0x0f; // LED Display
+	DDRB = 0xf0; // PB7 ~ PB4 사용
+	PORTB = MOTOR_STANDBY; // 초기는 Standby 상태
+	TCCR2 = 0x6b; // WGM10 = 11 : Fast PWM 모드
+	// COM10 = 10 : match시 OC2 = 0,
+	// TCNT 0x00에서 OC2 =1
+	// CS2-0 = 011 : 64분주
+	PORTB = MOTOR_CW; // 모터 기동 준비
+	while (1)
+	{
+		value = rand() % 4; // 랜덤값 추출
+		OCR2 = motor_speed[value]; // 속도 선택, 정지, 저속, 중속, 고속 중 선택
+		PORTA = 1 << value; // LED에 현재 속도 디스플레이
+		value = (rand() % 4) + 1; // 1~4까지 랜덤값 추출
+		_delay_ms(value*1000); // 딜레이 시간 선택, 1초, 2초, 3초, 4초 중 선택
+	}
+}

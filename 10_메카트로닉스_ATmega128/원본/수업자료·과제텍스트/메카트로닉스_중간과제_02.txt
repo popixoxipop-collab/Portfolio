@@ -1,0 +1,44 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>	// 인터럽트 처리 시 필요한 헤더 파일 include
+#include <stdlib.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+
+unsigned char digit[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66,
+0x6d, 0x7c, 0x07, 0x7f, 0x67};
+volatile int count = 0;	        // 전역변수(global variable)
+
+
+
+void display_fnd(int count)
+{
+	int J;
+	for (J=0;J<1;J++)  //10*1ms= 1/100s 감소 빠르기 지정함
+	{
+
+		
+		int  num_10, num_1;
+		PORTC = 0x00;	 PORTG = 0x08; _delay_ms(5);      //천 자리 숫자 사용 안함
+		PORTC = 0x00;    PORTG = 0x04; _delay_ms(5);      //백 자리 숫자 사용 안함
+		
+		num_1 = count%10;	                              // 일 자리 숫자 추출
+		PORTC = digit[num_1]; PORTG = 0x01; _delay_ms(5); //가장 오른쪽 자리 '0'표시 후 대기
+		num_10 = (count/10)%10;		                  // 십 자리 숫자 추출
+		PORTC = digit[num_10];	 PORTG = 0x02; _delay_ms(5);}
+		
+	}
+	
+
+int main(void)
+{
+	DDRC = 0xff;		// C 포트는 FND 데이터 출력 신호
+	DDRG = 0x0f;		// G 포트는 FND 선택 출력 신호
+	
+	while (1)
+	{
+		count=rand();
+		display_fnd(count);
+		_delay_ms(500);
+	}
+}
+

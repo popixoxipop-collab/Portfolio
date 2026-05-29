@@ -1,0 +1,60 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#define F_CPU 	16000000UL
+#include <util/delay.h>
+// PB7 = AIN1, PB6 = AIN2, PB5 = PWMA, PB4 = STBY
+#define MOTOR_CW	 0xd0	// 모터 Forward : AIN1=1, AIN2=0, PWMA=1, STBY=1
+#define MOTOR_CCW 0xb0	// 모터 Reverse : AIN1=0, AIN2=1, PWMA=1, STBY=1
+#define MOTOR_BRAKE 0x70	 // 모터 Short Brake: AIN1=1, AIN2=1, PWMA=0, STBY=1
+#define MOTOR_STOP 0x00 	// 모터 Stop : AIN1=0, AIN2=0, PWMA=1, STBY=1
+
+ISR(INT4_vect)
+{
+	_delay_ms(100);		// 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x10)==0x00)	// 인터럽트 입력 핀(PE4)을 다시 검사하여
+	return;			// 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 4;		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	PORTB = MOTOR_CW;	// 순방향 회전
+	PORTA = 0x03;		// LED 오른쪽 2개 ON		// 다음곡으로 넘어감
+}
+
+ISR(INT5_vect)
+{
+	_delay_ms(100);		// 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x20)==0x00)	// 인터럽트 입력 핀(PE4)을 다시 검사하여
+	return;			// 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 5;		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	PORTB = MOTOR_CCW;	// 역방향 회전
+	PORTA = 0x0c;		// LED 왼쪽 2개 ON
+}
+
+ISR(INT6_vect)
+{
+	_delay_ms(100);		// 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x40)==0x00)	// 인터럽트 입력 핀(PE4)을 다시 검사하여
+	return;			// 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 6;		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	PORTB = MOTOR_STOP; 	// 정지
+	PORTA = 0x00;		// LED OFF
+}
+
+
+
+
+int main(void)
+{
+	DDRB = 0xf0;		// PB7~ PB4 출력 처리
+	DDRA = 0x0f;		// LED 출력
+	DDRE = 0x00;		// PE4(SW1), PE5(SW2)을 포함한 PE 포트는 입력 신호
+	EICRB = 0x55;		// INT4,INT5,INT6 하강 에지(Falling Edge) 트리거
+	EIMSK = 0xf0;		// INT4,INT5,INT6 인터럽트 활성화
+	TIMSK = 0x01;
+	sei();
+	while(1)
+	{
+
+	}
+}

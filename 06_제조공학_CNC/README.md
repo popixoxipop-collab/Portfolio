@@ -107,3 +107,39 @@ $130 = 300   ; X 작업 범위 [mm]
 | 절삭력, 공구 마모 | 생산공학, 제조공학 |
 | 구조 강성 (알루미늄 프레임) | 재료역학, 정역학 |
 | GRBL PID 제어 | 제어공학 |
+
+---
+
+## 🛠 원본 자료 — CNC 3040 SolidWorks 설계
+
+`CNC 3040 Pro Max Metal` 메탈 프레임 CNC를 SolidWorks로 모델링·어셈블리하고, 부품을 선정·구매 정리하고, 정적 구조 해석까지 수행한 실제 산출물입니다.
+
+### 설계 산출물
+
+| 자료 | 내용 |
+|------|------|
+| `CNC_설계_부품_원본/대표작/CNC_최종어셈블리.SLDASM` | 최종 전체 어셈블리 |
+| `CNC_설계_부품_원본/SolidWorks 부품모델/CNC 3040 Pro Max Metal simple.SLDASM` | 메탈 프레임 어셈블리 |
+| `CNC_설계_부품_원본/SolidWorks 부품모델/*.STEP, *.stp` | STEP 임포트 모델(프레임·브라켓·Z축) |
+| `CNC_설계_부품_원본/SolidWorks 부품모델/Craft_Video.mp4` | 어셈블리/동작 영상 |
+
+### 주요 구성 부품
+
+- 리니어 가이드(LGS35/Lintech round rail), 사다리꼴 스크류(T8/T12 BARRA FILETTATA), NEMA17 스테퍼(`Nema_17_PHB42S48-401`), 500W 스핀들(`SPINDLE_500W`, ER11 척), V-Slot 알루미늄 프로파일.
+
+### 부품 선정 · 구매 (BOM)
+
+| 자료 | 내용 |
+|------|------|
+| `CNC_설계_부품_원본/대표작/CNC_부품_전체_출처_완성본.xlsx` | 전체 부품 목록 + 출처 정리 |
+| `CNC_설계_부품_원본/대표작/CNC 제작용 부품 목록*.pdf` | 제작용 부품 목록 |
+| `CNC_설계_부품_원본/CNC 구매자료/` | 구매처(LinTech) 자료 |
+| `CNC_설계_부품_원본/CNC 부품/*.url` | 부품 구매 링크 모음 |
+
+### 정적 구조 해석 (SolidWorks Simulation)
+
+- `Craft-정적 해석 1.CWR / .GEN` — 프레임 어셈블리의 정적 해석 결과/데이터(대용량, Git LFS).
+- 절삭 하중 하에서 프레임 변형·응력을 확인해 구조 강성을 검토.
+
+> CAD(`.SLDASM/.SLDPRT/.STEP`)·해석결과(`.CWR/.GEN`)·영상은 **Git LFS**로 추적됩니다.
+> 슬라이서 설치 파일(`AM_MasterSetup_*.exe`, 약 139MB)은 저장소에서 제외했습니다.

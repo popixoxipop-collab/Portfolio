@@ -1,0 +1,230 @@
+#include <avr/io.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+
+// CLCD Command & Data definitions
+#define BIT4_LINE2_DOT58      0x28
+#define DISPON_CUROFF_BLKOFF  0x0C
+#define DISPOFF_CUROFF_BLKOFF 0x08
+#define INC_NOSHIFT           0x06
+#define DISPCLEAR             0x01
+#define CUR1LINE              0x80
+#define CUR2LINE              0xC0
+#define CURHOME               0x02
+#define E_BIT                 0x04
+#define RW_BIT                0x03
+#define RS_BIT                0x02
+
+#define NULL 0x00
+
+// Function prototypes for CLCD
+void init_CLCD();
+void CLCD_cmd(char);
+void CLCD_data(char);
+void CLCD_puts(char *str);
+void CLCD_putc(char c);
+
+// Global variables for display numbers
+char CLCD_NUM[4] = {};
+
+// UART0 initialization function
+void init_uart0()
+{
+	UCSR0B = 0x18;
+	UCSR0C = 0x06;
+	UBRR0H = 0;
+	UBRR0L = 103;
+}
+
+// Transmit a single character via UART0
+void putchar0(char c)
+{
+	while (!(UCSR0A & (1 << UDRE0)));
+	UDR0 = c;
+}
+
+// Receive a single character via UART0
+char getchar0()
+{
+	while (!(UCSR0A & (1 << RXC0)));
+	return UDR0;
+}
+
+// Clear the CLCD display
+void clear_CLCD() {
+	CLCD_cmd(DISPCLEAR);
+	_delay_ms(2);
+}
+
+// Main function
+int main(void)
+{
+	char value = 0;
+	char first_num[3] = {};
+	char second_num[3] = {};
+	char operator = 0;
+	int index = 0;
+	int step = 0;
+
+	init_uart0();
+	init_CLCD();
+
+	while (1)
+	{
+		value = getchar0();
+		putchar0(value);
+
+		if (value == '\r') {
+			if (step == 3) {
+				clear_CLCD();
+				step = 0;
+				index = 0;
+				putchar0('\n');			// 줄바꿈(’\n’) 문자 추가 전송
+				for (int i = 0; i < 3; i++) {
+					first_num[i] = 0;
+					second_num[i] = 0;
+				}
+				operator = 0;
+				continue;
+				} else if (step == 0) {
+				first_num[index] = '\0';
+				step = 1;
+				index = 0;
+				} else if (step == 2) {
+				second_num[index] = '\0';
+				int num1 = (first_num[0] - '0') * 10 + (first_num[1] - '0');
+				int num2 = (second_num[0] - '0') * 10 + (second_num[1] - '0');
+				int result = 0;
+                putchar0(first_num[0]);
+                putchar0(first_num[1]);
+                
+				if (operator == '+') {
+					result = num1 + num2;
+					CLCD_NUM[0] = 0x2b; // '+'
+					} else if (operator == '-') {
+					result = num1 - num2;
+					CLCD_NUM[0] = 0x2d; // '-'
+				}
+			    if (result==0)
+				{
+					CLCD_NUM[0] = 0x2b;
+				}
+				putchar0(CLCD_NUM[0]);
+                putchar0(second_num[0]);
+                putchar0(second_num[1]);
+				
+				if (result<0)
+				{
+					result=-result;
+				}
+				
+				if (result>99)
+				{
+					CLCD_NUM[1] = (result / 100) % 10 + '0';
+					CLCD_NUM[2] = (result / 10) % 10 + '0';
+					CLCD_NUM[3] = result % 10 + '0';
+					CLCD_NUM[4] = '\0';
+				}
+				else 
+				{
+					CLCD_NUM[1] = (result / 10) % 10 + '0';
+					CLCD_NUM[2] = result % 10 + '0';
+					CLCD_NUM[3] = '\0';
+				}
+				
+				CLCD_cmd(CUR2LINE);
+				CLCD_puts(CLCD_NUM);
+				putchar0('\n');	// 줄바꿈(’\n’) 문자 추가 전송
+				putchar0('\r');		
+				putchar0('=');
+				putchar0(CLCD_NUM[0]);
+				putchar0(CLCD_NUM[1]);
+				putchar0(CLCD_NUM[2]);
+				putchar0(CLCD_NUM[3]);
+				
+				step = 3;
+			}
+			} else {
+			if ((value >= '0') && (value <= '9')) {
+				if (step == 0) {
+					first_num[index++] = value;
+					 
+					  
+					} else if (step == 2) {
+					second_num[index++] = value;
+				}
+				CLCD_putc(value);
+				} else if (value == '+' || value == '-') {
+				if (step == 1) {
+					operator = value;
+					step = 2;
+					index = 0;
+					CLCD_putc(value);
+				}
+			}
+		}
+	}
+}
+
+// Initialize the CLCD
+void init_CLCD()
+{
+	DDRC = 0xff;
+	DDRD = 0xff;
+	_delay_ms(50);
+	PORTC = 0x00;
+	CLCD_cmd(BIT4_LINE2_DOT58);
+	CLCD_cmd(DISPON_CUROFF_BLKOFF);
+	CLCD_cmd(INC_NOSHIFT);
+	CLCD_cmd(DISPCLEAR);
+	_delay_ms(2);
+}
+
+// Send string to CLCD
+void CLCD_puts(char *ptr)
+{
+	while (*ptr != '\0')
+	{
+		CLCD_data(*ptr++);
+	}
+}
+
+// Send character to CLCD
+void CLCD_putc(char c)
+{
+	CLCD_data(c);
+}
+
+// Send data to CLCD
+void CLCD_data(char data)
+{
+	PORTD = 0x04;
+	_delay_us(1);
+	PORTD = 0x14;
+	PORTC = data & 0xf0;
+	_delay_us(1);
+	PORTD = 0x04;
+	_delay_us(2);
+	PORTD = 0x14;
+	PORTC = (data << 4) & 0xf0;
+	_delay_us(1);
+	PORTD = 0x04;
+	_delay_ms(1);
+}
+
+// Send command to CLCD
+void CLCD_cmd(char cmd)
+{
+	PORTD = 0x00;
+	_delay_us(1);
+	PORTD = 0x10;
+	PORTC = cmd & 0xf0;
+	_delay_us(1);
+	PORTD = 0x00;
+	_delay_us(2);
+	PORTD = 0x10;
+	PORTC = (cmd << 4) & 0xf0;
+	_delay_us(1);
+	PORTD = 0x00;
+	_delay_ms(1);
+}

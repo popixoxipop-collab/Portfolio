@@ -1,0 +1,93 @@
+#include <avr/io.h>
+#include <avr/interrupt.h> //인터럽트처리시필요한헤더파일include
+#define F_CPU 16000000UL
+#include <util/delay.h>
+#define IDLE	0	 // IDLE 상태 값
+#define STOP	1	 // STOP 상태 값
+#define GO	2	     // GO 상태 값
+#define REVERSE	3	 // REVERSE 상태 값
+#define U_LAST 4       // 최상층 상태 값
+#define D_LAST 5       // 최하층 상태 값  
+
+unsigned char digit[10]={0x3f,0x06,0x5b,0x4f,0x66,
+0x6d,0x7c,0x07,0x7f,0x67}; // 0~9
+unsigned char sig[2]={0x00,0x40}; // 0,-
+unsigned char dir[2]={0x2e,0x5e}; // U,d
+
+volatile int count=0; //전역변수(globalvariable)
+volatile int state = IDLE;
+volatile int direct = 1;
+
+ISR(INT4_vect)
+{
+	_delay_ms(100); //스위치바운스기간동안기다림
+	if ((PINE&0x10)==0x10) //인터럽트입력핀(PE4)을다시검사하여
+	return; //눌러진상태가아니면(‘1’)인터럽트가아니므로리턴
+	EIFR|=1<<4; //눌러진상태이면(‘0’)그사이에바운스에 의하여 생긴 인터럽트는 무효화
+	
+	if (state == IDLE)	//IDLE 상태라면
+	{state = GO;
+	direct = 1;
+	count++;}
+	else if (state == D_LAST) // 아래 쪽 끝 상태라면 GO 방향
+	{state = GO ;
+	direct = 1;
+	count++}
+	else if (state == U_LAST) // 위 쪽 끝 상태라면 REVERSE 방향
+	{state = REVERSE;
+	direct = 2;
+	count--;}
+	else if (state == GO || state == REVERSE) // 위 쪽 이동 중이나 아래 쪽 이동 중인 경우 정지
+	{state = STOP;
+	}
+	else if (state = STOP && direct = 1)  // 정지 상태이고 방향이 up
+	{state = GO;
+	count++;}
+	else 
+	{state = REVERSE; // 정지 상태이고 방향이 down
+	count--;}
+}
+ISR(INT5_vect)
+{
+	_delay_ms(100); //스위치바운스기간동안기다림
+	if ((PINE&0x20)==0x20) //인터럽트입력핀(PE5)을다시검사하여
+	return; //눌러진상태가아니면(‘1’)인터럽트가아니므로리턴
+	EIFR|=1<<5; //눌러진상태이면(‘0’)그사이에바운스에의하여생긴
+	//인터럽트는무효화
+	if (state == GO)
+	state = REVERSE;
+	direct = 2;
+	count--;
+	else if (state == REVERSE)
+	state = GO;
+	direct = 1;
+	count++;
+	else 
+	
+}
+void display_fnd(int count)
+{
+	int num_1000,num_0100,num_0010,num_0001; // 지하인 경우만 부호 표시
+	PORTC=sig[direct];PORTG=0x08;_delay_ms(2);
+	
+	num_0100=(count/10)%10; // 십자리숫자추출
+	PORTC=digit[num_0100];PORTG=0x04;_delay_ms(2);
+	
+	num_0010=count%10; //일자리숫자추출
+	PORTC=digit[num_0010];PORTG=0x02;_delay_ms(2);
+	
+	num_0001=direct; // 이동 방향 표시
+	PORTC=dir[direct];PORTG=0x01;_delay_ms(2);
+}
+
+int main(void)
+{
+	DDRC=0xff; //C포트는FND데이터출력신호
+	DDRG=0x0f; //G포트는FND선택출력신호
+	DDRE=0x00; //PE4(SW1),PE5(SW2)을포함한PE포트는입력신호
+	EICRB=0x0a; // INT4, INT5하강에지(FallingEdge)트리거
+	EIMSK=0x30; // INT4, INT5인터럽트활성화
+	SREG|=0x80; //sei();대신사용가능함
+	while(1) //SREG의I(InterruptEnalbe)비트(bit7) ‘1’로세트
+	display_fnd(count); //FNDDisplay
+}

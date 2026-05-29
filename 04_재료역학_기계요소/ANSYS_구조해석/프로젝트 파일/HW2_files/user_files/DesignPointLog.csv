@@ -1,0 +1,12 @@
+﻿# 
+# This file contains the parameter values of the Design Points successfully updated by Ansys Workbench.
+# Project name: HW2
+# Creation date: 05/07/2024 23:09:59
+# 
+# 05/07/2024 23:09:59
+# The parameters defined in the project are:
+# ,P1 - Tensile Ultimate Strength [psi],P2 - Tensile Yield Strength [psi],P3 - Tensile Yield Strength [psi],P4 - Tensile Ultimate Strength [psi]
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name,P1,P2,P3,P4
+DP 0,78000,70000,70000,78000

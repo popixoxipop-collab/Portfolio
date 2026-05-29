@@ -1,0 +1,12 @@
+# OS / 임시 파일
+Thumbs.db
+desktop.ini
+.DS_Store
+~$*
+*.tmp
+*.asv
+
+# 제외한 제3자 소프트웨어(저장소 외부에서 내려받는 항목)
+# - AM_MasterSetup_*.exe : 슬라이서 설치 파일(약 139MB)
+# - pixy2-master.zip     : Pixy2 공식 SDK(약 82MB)
+*.exe

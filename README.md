@@ -1,6 +1,7 @@
-# 기계공학과 포트폴리오
+# 기계공학 포트폴리오 — 노경천
 
-> GPT 대화내역 기반으로 정리한 기계공학 과목별 학습 및 프로젝트 포트폴리오입니다.
+> 학부 기계공학 과정에서 수행한 설계·해석·실험·임베디드 제어 프로젝트를 **분야별**로 정리한 포트폴리오입니다.
+> 각 분야 README에는 개념 정리와 함께, 실제 수행한 **원본 산출물**(소스코드·CAD·보고서·발표자료·영상)을 함께 담았습니다.
 
 **GitHub:** https://github.com/popixoxipop-collab/Portfolio
 
@@ -8,38 +9,71 @@
 
 ## 목차
 
-| # | 분야 | 주요 내용 | 대화 건수 |
-|---|------|-----------|----------|
-| 01 | [제어공학 / Simulink · MATLAB](./01_제어공학_Simulink_MATLAB/README.md) | Kalman Filter, Simulink 모델링, 파이프라인 제어기 설계 | 16건 |
-| 02 | [열유체공학 / 냉난방 부하](./02_열유체공학_냉난방부하/README.md) | CLTD 법, ASHRAE 기준 냉방부하 계산, AHU·FCU 설계 | 6건 |
-| 03 | [동역학 / DC 모터](./03_동역학_DC모터/README.md) | PM Servomotor 수식, 기어 토크·주파수, Torsion | 4건 |
-| 04 | [재료역학 / 기계요소](./04_재료역학_기계요소/README.md) | 면적 관성모멘트, Plane Strain 응력, 단면 2차 모멘트 | 3건 |
-| 05 | [임베디드 제어 / Arduino](./05_임베디드제어_Arduino/README.md) | Arduino Nano 33 IoT BLE, L9110 모터 드라이버, 드론 제어 | 3건 |
-| 06 | [제조공학 / CNC](./06_제조공학_CNC/README.md) | DIY CNC 부품 설계, CATIA 모델링, 기계공작실 도면 | 2건 |
-| 07 | [도면 · 축척 · 계측](./07_도면_축척_계측/README.md) | 건축 도면 축척 계산, 외벽 면적 분석 | 2건 |
+| # | 분야 | 주요 내용 | 대표 산출물 |
+|---|------|-----------|-------------|
+| 01 | [제어공학 / Simulink · MATLAB](./01_제어공학_Simulink_MATLAB/README.md) | Kalman Filter, Simulink 모델링, 파이프라인 제어기 설계 | `KF*.slx` |
+| 02 | [열유체공학 / 냉난방부하 · 열전달실험](./02_열유체공학_냉난방부하/README.md) | CLTD 냉방부하 계산 + 열전도도·파이프 에너지손실 실험 | 실험 보고서 PDF |
+| 03 | [동역학 / DC 모터](./03_동역학_DC모터/README.md) | PM Servomotor 수식, 기어 토크·주파수 | — |
+| 04 | [재료역학 · 구조해석 (ANSYS)](./04_재료역학_기계요소/README.md) | 단면 2차 모멘트 + ANSYS 정적 구조해석(응력·변형) | ANSYS Workbench 프로젝트 |
+| 05 | [임베디드 제어 / Arduino · 드론 · BLE](./05_임베디드제어_Arduino/README.md) | ArduinoBLE 드론 모터 무선제어, 회로·부품 설계 | `.ino`, Fritzing |
+| 06 | [제조공학 / CNC 설계](./06_제조공학_CNC/README.md) | CNC 3040 메탈 프레임 SolidWorks 어셈블리·부품선정·정적해석 | `.SLDASM`, BOM |
+| 07 | [도면 · 축척 · 계측](./07_도면_축척_계측/README.md) | 건축 도면 축척 계산, 면적 분석 | — |
+| 08 | [수치해석 / MATLAB](./08_수치해석_MATLAB/README.md) | ODE 解法(오일러·중점·RK4), 수치적분, 보간·회귀, 근 찾기 | `.m` 다수 |
+| 09 | [기계진동학](./09_기계진동학/README.md) | 1자유도계 강제·지지 진동 변위응답·힘 전달률 분석 | `.m`, `.fig` |
+| 10 | [메카트로닉스 / ATmega128](./10_메카트로닉스_ATmega128/README.md) | 컵 비율 측정기, 엘리베이터 FND 제어 (AVR-C, 인터럽트) | 제어코드, 발표자료, 영상 |
+| 11 | [기계설계 / Ornithopter](./11_기계설계_Ornithopter/README.md) | 새 날갯짓 모사 팀 설계 프로젝트(모델링+서보 구동) | `.SLDPRT/.SLDASM` |
+| 12 | [전공진로설계](./12_전공진로설계/README.md) | 전공·진로 설계 활동 정리 | 활동 문서 |
+
+> 01·03·07은 기존 정리 내용을 유지했고, 02·04·05·06은 실제 원본 자료를 추가해 보강했습니다. 08~12는 이번에 새로 정리한 분야입니다.
 
 ---
 
 ## 기술 스택
 
-- **시뮬레이션**: MATLAB / Simulink
-- **임베디드**: Arduino (Nano 33 IoT), ArduinoBLE, L9110
-- **설계**: CATIA, AutoCAD
-- **계산**: ASHRAE CLTD 법, 열부하 계산, 재료역학 공식
-- **언어**: C/C++ (Arduino), MATLAB Script
+- **설계 (CAD)**: SolidWorks (CNC 프레임, Ornithopter 날개), CATIA, AutoCAD
+- **해석 (CAE/FEM)**: ANSYS Workbench(정적 구조해석), SolidWorks Simulation, MATLAB(진동·수치해석)
+- **시뮬레이션**: MATLAB / Simulink (Kalman Filter, 제어 루프)
+- **임베디드**: ATmega128(AVR-C), Arduino(Nano 33 IoT), ArduinoBLE, L9110
+- **센서·계측**: 초음파(HC-SR04), 조도(CdS), MPU6050, Pixy2
+- **실험·데이터 분석**: 열전달·유체 실험, Excel / MATLAB 회귀분석
+- **회로 설계**: Fritzing, 부품 선정(BOM)
+- **언어**: C/C++ (AVR, Arduino), MATLAB Script
 
 ---
 
 ## 주요 프로젝트 하이라이트
 
-### 🔵 Kalman Filter — Simulink 구현
-> Simulink에서 관측 업데이트·예측 단계를 분리 구현. 수동(MATLAB 스크립트) 방식과 비교 검증.
-
-### 🟠 냉난방 부하 계산 — CLTD 법
-> ASHRAE Fundamentals 기반 외부 지붕·벽체·창문·외기·내부 발열 항목별 냉방부하 계산표 작성. 전주 기준 외기 설계 조건 적용.
+### 🔵 컵 비율 측정기 — ATmega128 메카트로닉스
+> HC-SR04 초음파 거리센서와 CdS 조도센서로 컵에 담긴 액체의 비율(%)을 측정하고 CLCD에 표시. 인터럽트 기반 상태 제어. 발표·시연영상·완성 제어코드 포함. → [10번](./10_메카트로닉스_ATmega128/README.md)
 
 ### 🟢 BLE 드론 모터 제어 — Arduino
-> Arduino Nano 33 IoT + ArduinoBLE로 스마트폰 원격 제어 드론 구현. L9110 모터 드라이버 PWM 제어.
+> ArduinoBLE로 스마트폰↔드론 무선 제어 구현. 모터 PWM 제어, 조이스틱 드론 소스 분석, Fritzing 회로 및 부품 BOM. → [05번](./05_임베디드제어_Arduino/README.md)
 
-### 🔴 Pipeline Depth Controller 설계
-> Simulink 기반 파이프라인 압력·깊이 제어 루프 설계.
+### 🟣 CNC 3040 메탈 프레임 — SolidWorks 설계·해석
+> 리니어 가이드·볼스크류·스핀들로 구성한 CNC 전체 어셈블리 모델링, 부품 선정/구매 자료, 정적 구조 해석. → [06번](./06_제조공학_CNC/README.md)
+
+### 🟠 ANSYS 정적 구조해석
+> 스프링·발사체 등 부재의 응력·변형 해석(Static Structural). Workbench 프로젝트 일체. → [04번](./04_재료역학_기계요소/README.md)
+
+### 🟡 기계진동학 — 강제·지지 진동 응답
+> 1자유도계의 변위 진폭 |X(ω)|와 힘 전달률 F_T를 감쇠비·강성·질량 파라미터별로 MATLAB 분석. → [09번](./09_기계진동학/README.md)
+
+### ⚪ 수치해석 — ODE·적분·보간
+> 오일러/중점/RK4 解法 비교, 사다리꼴·심슨 적분, 스플라인 보간·회귀를 MATLAB로 구현. → [08번](./08_수치해석_MATLAB/README.md)
+
+### 🔴 Kalman Filter — Simulink 구현
+> Simulink에서 예측·관측 업데이트 단계 분리 구현, 수동 MATLAB 코드와 비교 검증. → [01번](./01_제어공학_Simulink_MATLAB/README.md)
+
+---
+
+## 자료 구성 안내
+
+- 각 분야 폴더의 `README.md`에 개념·방법·결과를 정리했고, 원본 파일은 같은 폴더(또는 `원본/`, `*_원본/`) 하위에 두었습니다.
+- **대용량 바이너리**(CAD `.SLDASM/.SLDPRT/.STEP`, 영상 `.mp4`, 발표 `.pptx`, 보고서 `.pdf`, 해석결과 등)는 **Git LFS**로 추적합니다. 클론 시 `git lfs install` 후 받으면 됩니다.
+- 다음 제3자 소프트웨어는 용량 문제로 저장소에서 **제외**(외부 다운로드 항목):
+  - `AM_MasterSetup_*.exe` — 슬라이서 설치 파일(약 139 MB)
+  - `pixy2-master.zip` — Pixy2 공식 SDK(약 82 MB)
+
+---
+
+**작성자: 노경천 (기계공학)**

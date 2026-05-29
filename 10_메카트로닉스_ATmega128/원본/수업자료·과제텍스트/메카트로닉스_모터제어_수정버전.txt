@@ -1,0 +1,28 @@
+#include <avr/io.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+// PB7 = AIN1, PB6 = AIN2, PB5 = PWMA, PB4 = STBY
+#define MOTOR_CW 0xd0 // 모터 Forward : AIN1=1, AIN2=0, PWMA=1, STBY=1
+#define MOTOR_CCW 0xb0 // 모터 Reverse : AIN1=0, AIN2=1, PWMA=1, STBY=1
+#define MOTOR_BRAKE 0x70 // 모터 Short Brake: AIN1=1, AIN2=1, PWMA=0, STBY=1
+#define MOTOR_STOP 0x00 // 모터 Stop : AIN1=0, AIN2=0, PWMA=1, STBY=1
+int main(void)
+{
+	DDRB = 0xf0; // PB7~ PB4 출력 처리
+	DDRA = 0x0f; // LED 출력
+	while(1)
+	{
+		PORTB = MOTOR_CW; // 순방향 회전
+		PORTA = 0x03; // LED 오른쪽 2개 ON
+		_delay_ms(5000); // 5초 Forward
+		PORTB = MOTOR_BRAKE; // 일시 정지
+		PORTA = 0x00; // LED OFF
+		_delay_ms(5000); // 5초 Brake(Stop)
+		PORTB = MOTOR_CCW; // 역방향 회전
+		PORTA = 0x0c; // LED 왼쪽 2개 ON
+		_delay_ms(10000); // 10초 Reverse
+		PORTB = MOTOR_STOP; // 정지
+		PORTA = 0x00; // LED OFF
+		_delay_ms(5000); // 5초 Stop(Stop)
+	}
+}

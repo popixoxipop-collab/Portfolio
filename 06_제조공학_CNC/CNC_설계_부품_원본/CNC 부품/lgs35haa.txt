@@ -1,0 +1,10 @@
+﻿"Symbol";"Value";"Unit";
+"TraceParts.PartNumber";"90-28112022-024702";"";
+"REFERENCE";"LGS35HAA";"";
+"TraceParts.PartTitle";"LGS series linear guide rail LGS35/LGS45";"";
+"TraceParts.InstanceId";"90-28112022-024702EZ18S1Z127R4DOFXFKG4Z5YIU";"";
+"SUPPLIER";"Height Precision Machinery";"";
+"DESIGN";"LGS35HAA series linear guide rail";"";
+"TRACEPARTS";"TRACEPARTS";"";
+"TraceParts.PartLanguage";"en";"";
+"TraceParts.PartVersion";"1.0.0";"";

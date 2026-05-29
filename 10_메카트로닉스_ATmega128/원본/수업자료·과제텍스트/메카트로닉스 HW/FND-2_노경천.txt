@@ -1,0 +1,30 @@
+#include <avr/io.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+int main()
+{
+	char tel_num[20]={0x00,0x00,0x00,0x00, //전화번호어레이설정
+		0x3f,0x06,0x3f,0x40, //010-6889-5940
+		0x7d,0x7f,0x7f,0x67, //앞과뒤의0x00은글자가보이지
+		0x40,0x6d,0x67,0x66, //않도록하기위한NULL데이터
+	0x3f,0x00,0x00,0x00};
+	int i, j;
+	DDRC=0xff; //FND를연결한포트C를출력으로설정
+	DDRG=0x0f; //FND선택신호인포트G를출력으로설정
+	while(1) //반복적으로디스플레이
+	{
+		for(i=0; i<17; i++) //4-digit디스플레이를17번실행
+		{
+			for(j=0; j<25; j++) //디스플레이시간=25x(5x4)
+			//=500ms(0.5초)
+			{
+				PORTC=tel_num[i];PORTG=0x08;_delay_ms(5);
+				PORTC=tel_num[i+1];PORTG=0x04;_delay_ms(5);
+				PORTC=tel_num[i+2];PORTG=0x02;_delay_ms(5);
+				PORTC=tel_num[i+3];PORTG=0x01;_delay_ms(5);
+			}
+			PORTG = 0x00;
+			_delay_ms(500); // 디스플레이 암전 시간 (0.5초)
+		}
+	}
+}

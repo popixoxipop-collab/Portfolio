@@ -1,0 +1,98 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>	// 인터럽트 처리 시 필요한 헤더 파일 include
+#define F_CPU 16000000UL
+#include <util/delay.h>
+#define IDLE 2 
+#define STOP 1
+#define DECREASE 0
+unsigned char digit[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66,
+0x6d, 0x7c, 0x07, 0x7f, 0x67};
+volatile int count = 0;	// 전역변수(global variable)
+volatile int state = IDLE; // 
+
+
+ISR(INT4_vect)
+{
+	_delay_ms(100);		// 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x10)==0x10)	// 인터럽트 입력 핀(PE4)을 다시 검사하여
+	return;			// 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 4;		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	count++;		// 입장객 수 증가
+}
+
+ISR (INT5_vect)
+{
+	_delay_ms(100);		// 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x20)==0x20)	// 인터럽트 입력 핀(PE5)을 다시 검사하여
+	return;			// 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 5;		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	count = count+10;		// 입장객 수 초기화
+}
+
+ISR (INT6_vect)
+{
+	_delay_ms(100);		// 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x40)==0x40)	// 인터럽트 입력 핀(PE5)을 다시 검사하여
+	return;			// 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 6;		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	count = count +100;		// 입장객 수 초기화
+}
+
+ISR (INT7_vect)
+{
+	_delay_ms(100);		// 스위치 바운스 기간 동안 기다림
+	if ((PINE & 0x80)==0x80)	// 인터럽트 입력 핀(PE5)을 다시 검사하여
+	return;			// 눌러진 상태가 아니면(‘1’) 인터럽트가 아니므로 리턴
+	EIFR |= 1 << 7;		// 눌러진 상태이면(‘0’) 그 사이에 바운스에 의하여 생긴
+	// 인터럽트는 무효화
+	state = DECREASE;		// 카운트 1씩 감소
+}
+
+void display_fnd(int count)
+{
+	int J;
+	for (J=0;J<50;J++) 
+	{
+	int num_100, num_10, num_1;
+	PORTC = 0x00;	 PORTG = 0x08; _delay_ms(2); //천 자리 숫자 사용 안함
+	num_100 = (count/100)%10;		// 백 자리 숫자 추출
+	PORTC = digit[num_100]; PORTG = 0x04; _delay_ms(2);
+	num_10 = (count/10)%10;		// 십 자리 숫자 추출
+	PORTC = digit[num_10];	 PORTG = 0x02; _delay_ms(2);
+	num_1 = count%10;	// 일 자리 숫자 추출
+	PORTC = digit[num_1]; PORTG = 0x01; _delay_ms(2);
+	}
+}
+
+int main(void)
+{
+	int i ;
+	DDRC = 0xff;		// C 포트는 FND 데이터 출력 신호
+	DDRG = 0x0f;		// G 포트는 FND 선택 출력 신호
+	DDRE = 0x00;		// PE4(SW1), PE5(SW2)을 포함한 PE 포트는 입력 신호
+	EICRB = 0x0a;		// INT4, INT5,INT6,INT7 하강 에지(Falling Edge) 트리거
+	EIMSK = 0xf0;		// INT4, INT5,INT6,INT7 인터럽트 활성화
+	SREG |= 0x80;		// SREG의 I(Interrupt Enalbe) 비트(bit7) ‘1’로 세트
+	while (1)
+	if (state= DECREASE)
+	{
+	for (i=0;i<4;i++)
+	{
+		if(i%2)
+		{display_fnd(count);	// FND Display
+		count--;
+		_delay_ms(500);}
+		else
+		{display_fnd(count);	// FND Display
+		count--;
+		_delay_ms(500);}
+	}
+	}
+	if (count ==0)
+	    display_fnd(count);	// FND Displa
+}
+
+

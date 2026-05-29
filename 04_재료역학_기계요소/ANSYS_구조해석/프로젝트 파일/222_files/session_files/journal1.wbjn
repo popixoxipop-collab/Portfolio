@@ -1,0 +1,98 @@
+# encoding: utf-8
+# 2024 R1
+SetScriptVersion(Version="24.1.144")
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+geometry1.Exit()
+favorites1 = EngData.LoadFavoriteItems()
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+material1 = engineeringData1.GetMaterial(Name="Structural Steel")
+matl1 = material1.Duplicate(TargetContainer=engineeringData1)
+unitSystem1 = SetProjectUnitSystem(UnitSystemName="NMMTON_STANDARD")
+matlProp1 = matl1.GetProperty(Name="Tensile Yield Strength")
+matlProp1.SetVariableProperty(
+    VariableName="Tensile Yield Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp1.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["250 [MPa]"]])
+matlProp1.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["427.5 [MPa]"]])
+matlProp2 = matl1.GetProperty(Name="Tensile Ultimate Strength")
+matlProp2.SetVariableProperty(
+    VariableName="Tensile Ultimate Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp2.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["460 [MPa]"]])
+matlProp2.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["748.1 [MPa]"]])
+matlProp3 = matl1.CreateProperty(
+    Name="Time Hardening",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp3.Delete()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+unitSystem2 = SetProjectUnitSystem(UnitSystemName="NMMTON_STANDARD")
+model1.Exit()
+modelComponent1.Refresh()
+model1.Edit()
+system2 = template1.CreateSystem(
+    Position="Right",
+    RelativeTo=system1)
+geometry2 = system2.GetContainer(ComponentName="Geometry")
+geometry2.Edit(IsDiscoveryGeometry=True)
+model1.Exit()
+geometry2.Exit()
+geometry2.Edit()
+geometry2.Exit()
+system2.Delete()
+system3 = template1.CreateSystem(
+    Position="Right",
+    RelativeTo=system1)
+geometry3 = system3.GetContainer(ComponentName="Geometry")
+geometry3.Edit()
+geometry3.Exit()
+modelComponent2 = system3.GetComponent(Name="Model")
+modelComponent2.Refresh()
+model2 = system3.GetContainer(ComponentName="Model")
+model2.Edit()
+model2.Exit()
+engineeringData2 = system3.GetContainer(ComponentName="Engineering Data")
+material2 = engineeringData2.GetMaterial(Name="Structural Steel")
+matl2 = material2.Duplicate(TargetContainer=engineeringData2)
+matlProp4 = matl2.GetProperty(Name="Tensile Yield Strength")
+matlProp4.SetVariableProperty(
+    VariableName="Tensile Yield Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp4.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["250 [MPa]"]])
+matlProp4.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["427.5 [MPa]"]])
+matlProp5 = matl2.GetProperty(Name="Tensile Ultimate Strength")
+matlProp5.SetVariableProperty(
+    VariableName="Tensile Ultimate Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp5.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["460 [MPa]"]])
+matlProp5.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["748.1 [MPa]"]])
+Save(Overwrite=True)

@@ -1,0 +1,161 @@
+# encoding: utf-8
+# 2024 R1
+SetScriptVersion(Version="24.1.144")
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+geometry1.Exit()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+geometry1.Edit()
+geometry1.Exit()
+modelComponent1.Refresh()
+modelComponent1.Refresh()
+geometry1.Edit()
+geometry1.Exit()
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+model1.Exit()
+model1.Edit()
+model1.Exit()
+modelComponent1.Update(AllDependencies=True)
+model1.Edit()
+model1.Exit()
+model1.Edit()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+material1 = engineeringData1.GetMaterial(Name="AL 7075-T6")
+material1.Delete()
+material2 = engineeringData1.GetMaterial(Name="AL 7075-T6 2")
+material2.Delete()
+material3 = engineeringData1.GetMaterial(Name="Structural Steel 2")
+material3.Delete()
+favorites1 = EngData.LoadFavoriteItems()
+material4 = engineeringData1.GetMaterial(Name="AL 7075-T6")
+matlProp1 = material4.CreateProperty(
+    Name="Coefficient of Thermal Expansion",
+    Definition="Secant",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "Secant", "Behavior": "Isotropic"})
+matlProp2 = material4.CreateProperty(
+    Name="Coefficient of Thermal Expansion",
+    Definition="Secant",
+    Behavior="Orthotropic",
+    Qualifiers={"Definition": "Secant", "Behavior": "Orthotropic"})
+matlProp2.Delete(
+    Definition="Secant",
+    Behavior="Isotropic")
+matlProp2.Delete(
+    Definition="Secant",
+    Behavior="Orthotropic")
+unitSystem1 = SetProjectUnitSystem(UnitSystemName="US Engineering")
+material4.Delete()
+EngData.EnableFilter(Enable=False)
+model1.Exit()
+modelComponent1.Refresh()
+model1.Edit()
+material5 = engineeringData1.GetMaterial(Name="Structural Steel")
+matl1 = material5.Duplicate(TargetContainer=engineeringData1)
+matlProp3 = matl1.GetProperty(Name="Density")
+matlProp3.SetData(
+    Variables=["Density"],
+    Values=[["2804 [kg m^-3]"]])
+matlProp4 = matl1.GetProperty(Name="Tensile Yield Strength")
+matlProp4.SetVariableProperty(
+    VariableName="Tensile Yield Strength",
+    Property="Unit",
+    Value="psi")
+matlProp4.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["36259.43443254369 [psi]"]])
+matlProp4.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["70000 [psi]"]])
+matlProp5 = matl1.GetProperty(Name="Compressive Yield Strength")
+matlProp5.SetVariableProperty(
+    VariableName="Compressive Yield Strength",
+    Property="Unit",
+    Value="psi")
+matlProp5.SetData(
+    Variables=["Compressive Yield Strength"],
+    Values=[["36259.43443254369 [psi]"]])
+matlProp6 = matl1.GetProperty(Name="Tensile Ultimate Strength")
+matlProp6.SetVariableProperty(
+    VariableName="Tensile Ultimate Strength",
+    Property="Unit",
+    Value="psi")
+matlProp6.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["66717.359355880384 [psi]"]])
+matlProp5.SetData(
+    Variables=["Compressive Yield Strength"],
+    Values=[["70000 [psi]"]])
+matlProp6.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["78000 [psi]"]])
+matlProp7 = matl1.GetProperty(Name="Compressive Ultimate Strength")
+matlProp7.SetVariableProperty(
+    VariableName="Compressive Ultimate Strength",
+    Property="Unit",
+    Value="psi")
+matlProp7.SetData(
+    Variables=["Compressive Ultimate Strength"],
+    Values=[["0 [psi]"]])
+matlProp7.SetData(
+    Variables=["Compressive Ultimate Strength"],
+    Values=[["78000 [psi]"]])
+materialPropertyData1 = matlProp6.GetPropertyData(
+    Name="Tensile Ultimate Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+materialVariable1 = materialPropertyData1.GetVariable(Name="Tensile Ultimate Strength")
+parameter1 = Parameters.CreateParameter(
+    Entity=materialVariable1,
+    PropertyName="ParameterValue",
+    DisplayText="Tensile Ultimate Strength")
+parameter1.ValueQuantityName = "Stress"
+materialPropertyData2 = matlProp4.GetPropertyData(
+    Name="Tensile Yield Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+materialVariable2 = materialPropertyData2.GetVariable(Name="Tensile Yield Strength")
+parameter2 = Parameters.CreateParameter(
+    Entity=materialVariable2,
+    PropertyName="ParameterValue",
+    DisplayText="Tensile Yield Strength")
+parameter2.ValueQuantityName = "Stress"
+model1.Exit()
+modelComponent1.Refresh()
+model1.Edit()
+library1 = EngData.OpenLibrary(
+    Name="General_Materials",
+    Source=ANSYS::Disk::General_Materials.xml)
+EngData.EnableFilter()
+matl2 = matl1.Duplicate(TargetContainer=engineeringData1)
+matl2.SetAsDefaultSolidForModel()
+Save(Overwrite=True)
+model1.Exit()
+EngData.EnableFilter(Enable=False)
+matl3 = matl1.Duplicate(TargetContainer=engineeringData1)
+EngData.EnableFilter()
+material5.DisplayName = "Air"
+matlProp8 = material5.CreateProperty(
+    Name="Isotropic Hardening",
+    Definition="Bilinear",
+    Qualifiers={"Definition": "Bilinear", "Behavior": ""})
+matlProp9 = material5.CreateProperty(
+    Name="Isotropic Hardening",
+    Definition="Multilinear",
+    Qualifiers={"Definition": "Multilinear", "Behavior": ""})
+library2 = EngData.OpenLibrary(
+    Name="General_Materials",
+    Source=ANSYS::Disk::General_Materials.xml)
+library3 = EngData.OpenLibrary(
+    Name="Composite Materials",
+    Source="Composite_Materials.xml")
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+model1.Edit()
+model1.Exit()
+Save(Overwrite=True)

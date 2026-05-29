@@ -1,0 +1,51 @@
+#include <avr/io.h>
+#define   F_CPU 	16000000UL
+#include <util/delay.h>
+
+#define	TRIG	6		// HC-SR04 Trigger 신호 (출력 = PE6)
+#define	ECHO	7		// HC-SR04 Echo 신호 (입력 = PE7)
+#define 	SOUND_VELOCITY	340UL	// 소리 속도 (m/sec)
+
+int i;
+
+int main(void)
+{
+	unsigned int distance;
+	DDRG = 0x01;				// 삐에조 버저 출력 PG0 (* 교재는 PB4)
+	DDRE = ((DDRE | (1<<TRIG)) & ~(1<<ECHO)); 	// TRIG = 출력, ECHO = 입력으로 셋팅
+	DDRA=0xff;
+	while(1)
+	{
+		TCCR1B = 0x03;		// Counter/Timer 1 클록 4us
+		PORTE &= ~(1<<TRIG);	// Trig = LOW 상태 유지
+		_delay_us(10);		// 최소 10us 동안
+		PORTE |= (1<<TRIG);	// Trig = HIGH -> 거리 측정 명령 시작
+		_delay_us(10);		// 펄스폭을 최소 10us 유지
+		PORTE &= ~(1<<TRIG);	// Trig = LOW -> 거리 측정 명령 끝
+		while(!(PINE & (1<<ECHO)))
+		;			// Echo = HIGH가 될 때까지 대기
+		TCNT1 = 0x0000;		// Counter/Timer 1 값 초기화(=0)
+		while (PINE & (1<<ECHO))
+		;			// Echo = LOW가 될 때까지 대기 -> 측정 완료
+		TCCR1B = 0x00;		// Counter/Timer 1 클록 정지
+		distance = (unsigned int)(SOUND_VELOCITY * (TCNT1 * 4 / 2) / 1000); // 거리 = 속도 * 시간
+
+		if (distance < 300)			// 30cm 이내 접근?
+		{
+			PORTA=0xff;
+			
+		}
+		else if (distance < 600)		// 60cm 이내 접근?
+		{
+			PORTA=0x1f;
+			
+		}
+		
+		else if (distance < 1000)		// 1m 이내 접근?
+		{
+			PORTA=0x07;
+			
+		}
+		else 	{PORTA=0x01;}		// 1m 이상 거리가 있는 경우, 버저 울리지 않음
+	}
+}

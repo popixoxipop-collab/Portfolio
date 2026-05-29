@@ -1,0 +1,52 @@
+#include <avr/io.h>
+
+void delay_sec(int sec)
+
+{
+	volatile int i,j,k;
+	
+	for (k=0; k<sec; k++)
+	   for ( i=0; i<1000; i++)    // 내부 루프 1 번은 16클록 소요 가정
+	      for  ( j=0; j<100; j++)  // 총 100 X 1000 x 16 = 약 0.1초
+		  ;
+}
+
+int main(void)
+{
+  DDRA = 0xff;
+  while(1)
+  {
+	  PORTA = 0x80;
+	  delay_sec(1);
+	  PORTA = 0xc0;
+	  delay_sec(1);
+	  PORTA = 0xe0;
+	  delay_sec(1);
+	  PORTA = 0xf0;
+	  delay_sec(1);
+	  PORTA = 0xf8;
+	  delay_sec(1);
+	  PORTA = 0xfc;
+	  delay_sec(1);
+	  PORTA = 0xfe;
+	  delay_sec(1);
+	  PORTA = 0xff;
+	  delay_sec(1);   
+	  
+	  PORTA = 0xfe;
+	  delay_sec(1);
+	  PORTA = 0xfc;
+	  delay_sec(1);
+	  PORTA = 0xf8;
+	  delay_sec(1);
+	  PORTA = 0xf0;
+	  delay_sec(1);
+	  PORTA = 0xe0;
+	  delay_sec(1);
+	  PORTA = 0xc0;
+	  delay_sec(1);
+	  
+	  
+	  
+  }
+}
