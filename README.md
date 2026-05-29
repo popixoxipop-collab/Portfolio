@@ -104,7 +104,7 @@
 |------|------|------|
 | WorldQuant IQC 2026 — Stage 1 | 인증서(이미지) | [인증서 보기](발표자료/assets/WorldQuant_IQC2026_Stage1_Certificate.png) |
 | Kaggle (Nemotron Reasoning·AIMO 2025) | 대회 참가 | _프로필 링크 추가 예정_ |
-| AEQ — LLM 추론 양자화 | 자체 벤치마크 · 논문 | _arXiv 준비 중 / 비공개 repo (요청 시 공유)_ |
+| AEQ — LLM 추론 양자화 | **배치 규모에서 vLLM 대비 수 배 처리량 향상**(자체 측정 · 구체 수치는 면접 시 공유) | _arXiv 준비 중 / 비공개 repo (요청 시 공유)_ |
 | WorldQuant BRAIN 알파 60+ | 활성화 경험 | _BRAIN 프로필 (요청 시 공유)_ |
 
 > 일부 연구는 **미공개(arXiv 준비 중)·비공개 저장소** 단계로, 공개 가능한 링크·수치는 순차적으로 보강합니다.
