@@ -4,7 +4,9 @@
 > 각 분야 README에는 개념 정리와 함께, 실제 수행한 **원본 산출물**(소스코드·CAD·보고서·발표자료·영상)을 함께 담았습니다.
 
 **GitHub:** https://github.com/popixoxipop-collab/Portfolio
-**발표자료:** [`발표자료/포트폴리오_노경천.pptx`](./발표자료/포트폴리오_노경천.pptx)
+**발표자료:**
+- [`발표자료/포트폴리오_노경천.pptx`](./발표자료/포트폴리오_노경천.pptx) — 개인 포트폴리오 덱(WorldQuant IQC 2026 Stage 1 인증서 포함)
+- [`발표자료/포트폴리오_노경천_고도화_Gamma.pptx`](./발표자료/포트폴리오_노경천_고도화_Gamma.pptx) — 저장소 16개 프로젝트를 반영해 재구성한 고도화 덱 ([Gamma에서 보기](https://gamma.app/docs/a90wmov020r52pd))
 
 ---
 
