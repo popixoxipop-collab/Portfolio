@@ -5,7 +5,8 @@
 
 **GitHub:** https://github.com/popixoxipop-collab/Portfolio
 **발표자료:**
-- [`발표자료/포트폴리오_노경천.pptx`](./발표자료/포트폴리오_노경천.pptx) 
+- [`발표자료/포트폴리오_노경천.pptx`](./발표자료/포트폴리오_노경천.pptx) — 개인 포트폴리오 덱
+- [`발표자료/포트폴리오_노경천_고도화_Gamma.pptx`](./발표자료/포트폴리오_노경천_고도화_Gamma.pptx) — 원본 기준 상향 통합본 ([Gamma에서 보기](https://gamma.app/docs/tviofk0tgnbd7ve)) 
 
 
 ---
@@ -92,6 +93,21 @@
 | 임베디드 · 제어 | 센서로 물리량을 측정·제어할 수 있는가 | MCU 레지스터 제어, 센서 융합, 인터럽트 상태제어, BLE 통신 | [10](./10_메카트로닉스_ATmega128/README.md) · [05](./05_임베디드제어_Arduino/README.md) · [01](./01_제어공학_Simulink_MATLAB/README.md) |
 | AI · 데이터 | 데이터로 문제를 정의·검증하고 자동화할 수 있는가 | 데이터 분석·모델링, LLM Agent 설계·운영(LangGraph·LangSmith), 대시보드 | [13](./13_데이터분석_고객만족도예측/README.md) · [14](./14_AI에이전트_AI강사/README.md) · [15](./15_AI에이전트_상품리뷰분석/README.md) |
 | 웹 · 풀스택 | 사용자 기능을 안정적으로 구현·연동할 수 있는가 | React SPA, REST 연동, 외부 AI API 연동 | [16](./16_웹개발_도서표지AI서비스/README.md) |
+
+---
+
+## 🔗 증빙 · 외부 링크 (AI 시스템 연구 트랙)
+
+발표자료의 고급 연구 프로젝트(AEQ·알고리즘 트레이딩·온디바이스 AI)에 대한 검증 자료입니다.
+
+| 항목 | 증빙 | 링크 |
+|------|------|------|
+| WorldQuant IQC 2026 — Stage 1 | 인증서(이미지) | [인증서 보기](발표자료/assets/WorldQuant_IQC2026_Stage1_Certificate.png) |
+| Kaggle (Nemotron Reasoning·AIMO 2025) | 대회 참가 | _프로필 링크 추가 예정_ |
+| AEQ — LLM 추론 양자화 | 자체 벤치마크 · 논문 | _arXiv 준비 중 / 비공개 repo (요청 시 공유)_ |
+| WorldQuant BRAIN 알파 60+ | 활성화 경험 | _BRAIN 프로필 (요청 시 공유)_ |
+
+> 일부 연구는 **미공개(arXiv 준비 중)·비공개 저장소** 단계로, 공개 가능한 링크·수치는 순차적으로 보강합니다.
 
 ---
 
