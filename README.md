@@ -5,8 +5,8 @@
 
 **GitHub:** https://github.com/popixoxipop-collab/Portfolio
 **발표자료:**
-- [`발표자료/포트폴리오_노경천.pptx`](./발표자료/포트폴리오_노경천.pptx) — 개인 포트폴리오 덱(WorldQuant IQC 2026 Stage 1 인증서 포함)
-- [`발표자료/포트폴리오_노경천_고도화_Gamma.pptx`](./발표자료/포트폴리오_노경천_고도화_Gamma.pptx) — 저장소 16개 프로젝트를 반영해 재구성한 고도화 덱 ([Gamma에서 보기](https://gamma.app/docs/a90wmov020r52pd))
+- [`발표자료/포트폴리오_노경천.pptx`](./발표자료/포트폴리오_노경천.pptx) 
+
 
 ---
 
@@ -99,9 +99,7 @@
 
 - 각 분야 폴더의 `README.md`에 개념·방법·결과를 정리했고, 원본 파일은 같은 폴더(또는 `원본/`, `*_원본/`) 하위에 두었습니다.
 - **대용량 바이너리**(CAD `.SLDASM/.SLDPRT/.STEP`, 영상 `.mp4`, 발표 `.pptx`, 보고서 `.pdf`, 해석결과 등)는 **Git LFS**로 추적합니다. 클론 시 `git lfs install` 후 받으면 됩니다.
-- 다음 제3자 소프트웨어는 용량 문제로 저장소에서 **제외**(외부 다운로드 항목):
-  - `AM_MasterSetup_*.exe` — 슬라이서 설치 파일(약 139 MB)
-  - `pixy2-master.zip` — Pixy2 공식 SDK(약 82 MB)
+
 
 ---
 
