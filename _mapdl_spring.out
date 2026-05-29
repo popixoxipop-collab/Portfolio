@@ -1,0 +1,178 @@
+
+ ANSYS LICENSE MANAGER ERROR:
+ Feature has expired.
+ Feature:       ansys
+ Expire date:   31-jan-2025
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-10,32
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       mech_2
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       mech_1
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       meba
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ Feature has expired.
+ Feature:       preppost
+ Expire date:   31-jan-2025
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-10,32
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       ane3fl
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       ane3
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       ancfx
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       struct
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       prf
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       prfnls
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ Feature has expired.
+ Feature:       emag
+ Expire date:   31-jan-2025
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-10,32
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       dynapp
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       mpba
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+
+ ANSYS LICENSE MANAGER ERROR:
+ No such feature exists.
+ Feature:       stba
+ License path:  D:\Temp\\12bb0aba-3d66-42f1-8a46-46c7a33716dd;
+ FlexNet Licensing error:-5,357
+
+ *** ERROR - ANSYS license not available.
+
++--------------------- M A P D L   S T A T I S T I C S ------------------------+
+
+Release: 2024 R1            Build: 24.1       Update: UP20231106   Platform: WINDOWS x64 
+Date Run: 05/29/2026   Time: 11:41     Process ID: 30752
+Operating System: Windows 11  (Build: 26200)
+
+Processor Model: 12th Gen Intel(R) Core(TM) i5-12600KF
+
+Compiler: Intel(R) Fortran Compiler Classic Version 2021.9  (Build: 20230302)
+          Intel(R) C/C++ Compiler Classic Version 2021.9  (Build: 20230302)
+          Intel(R) Math Kernel Library Version 2020.0.0 Product Build 20191125
+          BLAS Library supplied by Intel(R) MKL
+
+Number of machines requested            :    1
+Total number of cores available         :   16
+Number of physical cores available      :   10
+Number of processes requested           :    1
+Number of threads per process requested :    1
+Total number of cores requested         :    1 (Shared Memory Parallel)                    
+
+GPU Acceleration: Not Requested
+
+Job Name: file
+Working Directory: 
+
+Total CPU time for main thread                    :        0.4 seconds
+Total CPU time summed for all threads             :        0.2 seconds
+
+Elapsed time spent obtaining a license            :        0.0 seconds
+Elapsed time spent pre-processing model (/PREP7)  :        0.0 seconds
+Elapsed time spent solution - preprocessing       :        0.0 seconds
+Elapsed time spent computing solution             :        0.0 seconds
+Elapsed time spent solution - postprocessing      :        0.0 seconds
+Elapsed time spent post-processing model (/POST1) :        0.0 seconds
+ 
+
+Sum of disk space used on all processes           :        0.0 MB
+
+Sum of memory used on all processes               :        2.0 MB
+Sum of memory allocated on all processes          :        0.0 MB
+Physical memory available                         :         48 GB
+Total amount of I/O written to disk               :        0.0 GB
+Total amount of I/O read from disk                :        0.0 GB
+
++------------------ E N D   M A P D L   S T A T I S T I C S -------------------+
+
+
+ *-----------------------------------------------------------------------------*
+ |                                                                             |
+ |                               RUN COMPLETED                                 |
+ |                                                                             |
+ |-----------------------------------------------------------------------------|
+ |                                                                             |
+ |  Ansys MAPDL 2024 R1         Build 24.1         UP20231106    WINDOWS x64   |
+ |                                                                             |
+ |-----------------------------------------------------------------------------|
+ |                                                                             |
+ |  Database Requested(-db)     1024 MB     Scratch Memory Requested      0 MB |
+ |  Max Database Used(Master)      1 MB     Max Scratch Used(Master)      1 MB |
+ |  Max Database Used(Workers)     0 MB     Max Scratch Used(Workers)     0 MB |
+ |  Sum Database Used(All)         1 MB     Sum Scratch Used(All)         1 MB |
+ |                                                                             |
+ |-----------------------------------------------------------------------------|
+ |                                                                             |
+ |        CP Time      (sec) =          0.172       Time  =  11:41:29          |
+ |        Elapsed Time (sec) =         14.000       Date  =  05/29/2026        |
+ |                                                                             |
+ *-----------------------------------------------------------------------------*

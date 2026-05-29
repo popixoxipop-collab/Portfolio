@@ -224,3 +224,5 @@ ANSYS_구조해석/프로젝트 파일/
 
 > ANSYS 프로젝트(`.wbpj`)와 해석 데이터(`.agdb`, `.mechdb`, `.rst`)는 용량이 커 **Git LFS**로 추적됩니다.
 
+> **정량 결과 안내**: 등가응력(von-Mises) 최댓값·최대 전 변형량 등 수치 결과는 ANSYS 결과 파일 `file.rst`(바이너리)에 저장되어 **ANSYS Mechanical에서 확인** 가능합니다. 결과 컨투어는 `ANSYS_결과이미지_*.png`, 자동 리포트는 `SPRING_report.html` 참고. (텍스트 산출물에는 수치가 노출되지 않아, 임의 수치를 기재하지 않았습니다.)
+
